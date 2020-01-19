@@ -9,10 +9,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flashcards',
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        primarySwatch: Colors.teal,
         accentColor: Colors.amber
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Home'),
     );
   }
 }
