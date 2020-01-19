@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 
 class DeckCard extends StatelessWidget {
   final int index;
+  final List<Deck> decks;
 
   const DeckCard({
     Key key,
-    this.index,
+    this.index, this.decks,
   }) : super(key: key);
 
   @override

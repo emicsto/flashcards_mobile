@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
       title: 'Flashcards',
       theme: ThemeData(
         primarySwatch: Colors.teal,
-        accentColor: Colors.amber
+        accentColor: Colors.cyan
       ),
       home: MyHomePage(title: 'Home'),
     );
