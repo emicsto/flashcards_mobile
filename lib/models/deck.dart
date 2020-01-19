@@ -1,21 +1,21 @@
-class FlashcardSet {
+class Deck {
   final String name;
   final int quantity;
 
-  FlashcardSet({this.name, this.quantity});
+  Deck({this.name, this.quantity});
 }
 
-List<FlashcardSet> flashcardSets = [
-  new FlashcardSet(
+List<Deck> decks = [
+  new Deck(
       name: "Set #1",
       quantity: 15),
-  new FlashcardSet(
+  new Deck(
       name: "Set #2",
       quantity: 3),
-  new FlashcardSet(
+  new Deck(
       name: "Set #3",
       quantity: 132),
-  new FlashcardSet(
+  new Deck(
       name: "Set #4",
       quantity: 66)
 ];

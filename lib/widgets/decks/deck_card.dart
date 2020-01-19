@@ -1,11 +1,11 @@
-import 'package:flashcards/models/flashcard_set.dart';
+import 'package:flashcards/models/deck.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SetCard extends StatelessWidget {
+class DeckCard extends StatelessWidget {
   final int index;
 
-  const SetCard({
+  const DeckCard({
     Key key,
     this.index,
   }) : super(key: key);
@@ -26,7 +26,7 @@ class SetCard extends StatelessWidget {
                 title: new Row(
                   children: <Widget>[
                     new Text(
-                      flashcardSets[index].name,
+                      decks[index].name,
                       style: new TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -34,7 +34,7 @@ class SetCard extends StatelessWidget {
                 subtitle: new Container(
                   padding: const EdgeInsets.only(top: 15.0),
                   child: new Text(
-                    flashcardSets[index].quantity.toString() + " terms",
+                    decks[index].quantity.toString() + " terms",
                     style: new TextStyle(color: Colors.grey, fontSize: 13.0),
                   ),
                 ),

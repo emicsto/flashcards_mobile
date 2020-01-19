@@ -1,7 +1,7 @@
-import 'package:flashcards/widgets/sets/set_list.dart';
+import 'package:flashcards/widgets/decks/decks.dart';
 import 'package:flutter/material.dart';
 
-import 'models/flashcard_set.dart';
+import 'models/deck.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -21,7 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Text(widget.title),
         ),
       ),
-      body: SetList(),
+      body: Decks(),
     );
   }
 }
