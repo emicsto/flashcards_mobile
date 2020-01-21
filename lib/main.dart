@@ -1,9 +1,9 @@
 import 'package:flashcards/flashcards_home.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(App());
 
-class MyApp extends StatelessWidget {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
           ThemeData(
               brightness: Brightness.dark,
               primarySwatch: Colors.orange),
-      home: MyHomePage(title: 'Home'),
+      home: HomePage(title: 'Home'),
     );
   }
 }
