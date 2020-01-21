@@ -9,12 +9,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flashcards',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
-        accentColor: Colors.cyan
-      ),
+          brightness: Brightness.light,
+          primarySwatch: Colors.teal,
+          accentColor: Colors.cyan),
+      darkTheme:
+          ThemeData(
+              brightness: Brightness.dark,
+              primarySwatch: Colors.orange),
       home: MyHomePage(title: 'Home'),
     );
   }
 }
-
-
