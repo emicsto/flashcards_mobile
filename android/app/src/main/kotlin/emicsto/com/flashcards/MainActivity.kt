@@ -1,4 +1,4 @@
-package emicsto.com.flashcards
+package me.emicsto.flashcards
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
