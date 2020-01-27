@@ -1,7 +1,7 @@
 import 'package:flashcards/widgets/decks/decks.dart';
 import 'package:flutter/material.dart';
 
-import 'models/deck.dart';
+import '../models/deck.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
