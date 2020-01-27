@@ -1,13 +1,15 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:flashcards/utils/http_dio.dart';
 import 'package:flashcards/models/deck.dart';
 
+import '../main.dart';
+
 Future<List<Deck>> fetchDecks() async {
-  final response = await http.get('https://app-flashcards.herokuapp.com/api/decks');
+  var _dio = await getHttpClient();
+  final response = await _dio.get('/decks');
 
   if (response.statusCode == 200) {
-    return (json.decode(response.body) as List)
-        .map((i) => Deck.fromJson(i))
+    return response.data
+        .map((i) => Deck.fromJson(i)).cast<Deck>()
         .toList();
   } else {
     throw Exception('Failed to load decks');
