@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Container(
           alignment: Alignment.center,
-            child: Text(widget.title),
+          child: Text(widget.title),
         ),
       ),
       body: Decks(),
