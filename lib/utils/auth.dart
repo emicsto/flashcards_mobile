@@ -3,28 +3,23 @@ import 'package:flashcards/screens/login.dart';
 
 import '../router.dart';
 
-void loginWithGoogle() {
-  googleSignIn.signIn().then((result) {
-    result.authentication.then((googleKey) {
-      sendIdToken(googleKey.idToken).then((_) {
-        navigatorKey.currentState.pushReplacementNamed(HomeViewRoute);
-      });
-    }).catchError((err) {
-      print('inner error');
-    });
-  }).catchError((err) {
-    print('error occured');
-  });
+Future<void> loginWithGoogle() async {
+  try {
+    var result = await googleSignIn.signIn();
+    var googleKey = await result.authentication;
+    await sendIdToken(googleKey.idToken);
+  } on Exception {
+    //TODO Add handler
+  }
+  navigatorKey.currentState.pushReplacementNamed(HomeViewRoute);
 }
 
-void signInSilently() {
-  googleSignIn.signInSilently().then((result) {
-    result.authentication.then((googleKey) {
-      sendIdToken(googleKey.idToken);
-    }).catchError((err) {
-      print('inner error');
-    });
-  }).catchError((err) {
+Future<void> signInSilently() async {
+  try {
+    var result = await googleSignIn.signInSilently();
+    var googleKey = await result?.authentication;
+    await sendIdToken(googleKey?.idToken);
+  } on Exception {
     loginWithGoogle();
-  });
+  }
 }
