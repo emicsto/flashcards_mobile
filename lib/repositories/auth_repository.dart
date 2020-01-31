@@ -38,3 +38,21 @@ Future<void> getUserInfo() async {
     throw Exception('Failed to get user info');
   }
 }
+
+Future<void> refreshToken(String idToken) async {
+  var _dio = await getHttpClient();
+
+  final response = await _dio.post("/auth/token/sign-in",
+      data: json.encode({"token": idToken}));
+
+  if (response.statusCode == 200) {
+    var tokenPair = TokenPair.fromJson(response.data);
+
+    await storage.write(key: "accessToken", value: tokenPair.accessToken);
+    await storage.write(key: "refreshToken", value: tokenPair.refreshToken);
+
+    getUserInfo();
+  } else {
+    throw Exception('Failed to retrieve tokens');
+  }
+}
