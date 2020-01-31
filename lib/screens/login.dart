@@ -2,6 +2,7 @@ import 'package:flashcards/repositories/auth_repository.dart';
 import 'package:flashcards/router.dart';
 import 'package:flashcards/utils/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 GoogleSignIn googleSignIn = new GoogleSignIn(
@@ -19,10 +20,15 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     Future<void> handleSignIn() async {
-      loginWithGoogle();
+      setState(() {
+        isLoading = true;
+      });
+      await loginWithGoogle();
     }
 
     return Scaffold(
@@ -34,19 +40,16 @@ class _LoginState extends State<Login> {
         ),
         body: Center(
             child: Container(
-                height: 70,
-                width: 200,
                 child: Column(
-                  children: <Widget>[
-                    RaisedButton(
-                        child: Text(
-                          "Login",
-                          style: TextStyle(fontSize: 30),
-                        ),
-                        onPressed: handleSignIn),
-                  ],
-                ))));
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+//                    GoogleSignInButton(onPressed: () {}),
+            isLoading
+                ? Center(child: CircularProgressIndicator())
+                : GoogleSignInButton(onPressed: handleSignIn, darkMode: true),
+          ],
+        ))));
   }
-
-  login() {}
 }
+
