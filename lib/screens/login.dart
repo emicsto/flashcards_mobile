@@ -1,8 +1,7 @@
-import 'package:flashcards/repositories/auth_repository.dart';
-import 'package:flashcards/router.dart';
 import 'package:flashcards/utils/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 GoogleSignIn googleSignIn = new GoogleSignIn(
@@ -28,28 +27,53 @@ class _LoginState extends State<Login> {
       setState(() {
         isLoading = true;
       });
+
       await loginWithGoogle();
+
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          setState(() {
+            isLoading = false;
+          });
+        }
+      });
     }
 
+    var loginText = Text(
+      "Login",
+      style: TextStyle(
+          fontSize: 30,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1.4),
+    );
+
+    var loginButton = Container(
+      height: 50,
+      child: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : GoogleSignInButton(onPressed: handleSignIn),
+    );
+
+    var loginImage = SizedBox.fromSize(
+      child: SvgPicture.asset(
+        'images/login.svg',
+      ),
+      size: Size(280.0, 280.0),
+    );
     return Scaffold(
-        appBar: AppBar(
-          title: Container(
-            alignment: Alignment.center,
-            child: Text("Login"),
-          ),
-        ),
-        body: Center(
-            child: Container(
-                child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-//                    GoogleSignInButton(onPressed: () {}),
-            isLoading
-                ? Center(child: CircularProgressIndicator())
-                : GoogleSignInButton(onPressed: handleSignIn, darkMode: true),
-          ],
-        ))));
+      backgroundColor: Color(0xFF268979),
+      body: Center(
+          child: Container(
+              child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          loginText,
+          loginImage,
+          loginButton,
+        ],
+      ))),
+    );
   }
 }
-

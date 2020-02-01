@@ -51,7 +51,6 @@ class DecksState extends State<Decks> {
           return Text("${snapshot.error}");
         }
 
-        // By default, show a loading spinner.
         return Container(
             alignment: Alignment.center, child: CircularProgressIndicator());
       },

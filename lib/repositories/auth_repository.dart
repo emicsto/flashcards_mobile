@@ -17,7 +17,7 @@ Future<void> sendIdToken(String idToken) async {
     await storage.write(key: "accessToken", value: tokenPair.accessToken);
     await storage.write(key: "refreshToken", value: tokenPair.refreshToken);
 
-    getUserInfo();
+    await getUserInfo();
   } else {
     throw Exception('Failed to retrieve tokens');
   }
