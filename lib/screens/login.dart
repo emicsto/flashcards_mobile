@@ -61,19 +61,17 @@ class _LoginState extends State<Login> {
       ),
       size: Size(280.0, 280.0),
     );
+
     return Scaffold(
-      backgroundColor: Color(0xFF268979),
-      body: Center(
-          child: Container(
-              child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          loginText,
-          loginImage,
-          loginButton,
-        ],
-      ))),
-    );
+        backgroundColor: Color(0xFF268979),
+        body: Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+              loginText,
+              loginImage,
+              loginButton,
+            ])));
   }
 }
