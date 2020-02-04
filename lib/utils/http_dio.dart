@@ -4,15 +4,18 @@ import 'package:dio/dio.dart';
 import 'package:flashcards/models/access_token.dart';
 
 import '../main.dart';
-import 'constants.dart';
+
+import '../env.dart';
+
 
 Future<Dio> getHttpClient() async {
+  var _baseUrl = environment["baseUrl"];
   var _accessToken = await storage.read(key: "accessToken");
   Dio dio = new Dio();
   Dio tokenDio = Dio();
 
-  dio.options.baseUrl = API_URL;
-  tokenDio.options.baseUrl = API_URL;
+  dio.options.baseUrl = _baseUrl;
+  tokenDio.options.baseUrl = _baseUrl;
   dio.interceptors.requestLock;
   if (_accessToken != null) {
     dio.interceptors.add(InterceptorsWrapper(

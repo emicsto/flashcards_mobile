@@ -6,6 +6,7 @@ import 'package:flashcards/utils/http_dio.dart';
 import '../main.dart';
 
 Future<void> sendIdToken(String idToken) async {
+
   var _dio = await getHttpClient();
 
   final response = await _dio.post("/auth/token/sign-in",
