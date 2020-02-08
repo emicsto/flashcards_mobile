@@ -4,8 +4,9 @@ part 'deck.g.dart';
 
 @JsonSerializable()
 class Deck {
-  Deck({this.name, this.quantity});
+  Deck({this.id, this.name, this.quantity});
 
+  final int id;
   final String name;
   final int quantity;
 

@@ -1,5 +1,5 @@
 import 'package:flashcards/router.dart';
-import 'package:flashcards/screens/flashcards_home.dart';
+import 'package:flashcards/screens/home.dart';
 import 'package:flashcards/utils/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -33,7 +33,10 @@ class App extends StatelessWidget {
           primarySwatch: Colors.teal,
           accentColor: Colors.cyan),
       darkTheme:
-          ThemeData(brightness: Brightness.dark, primarySwatch: Colors.orange),
+          ThemeData(brightness: Brightness.dark, primarySwatch: Colors.indigo, accentColor: Color(0xFF268979),
+              buttonTheme: ButtonThemeData(
+              buttonColor: Colors.white12,
+    )),
       onGenerateRoute: router.generateRoute,
       initialRoute: _initialRoute,
       navigatorKey: navigatorKey,

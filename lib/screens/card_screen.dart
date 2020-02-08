@@ -14,11 +14,11 @@ class _CardScreenState extends State<CardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Container(
-          alignment: Alignment.center,
-        ),
-      ),
+//      appBar: AppBar(
+//        title: Container(
+//          alignment: Alignment.center,
+//        ),
+//      ),
       body: CardWidget(id: widget.id),
     );
   }
