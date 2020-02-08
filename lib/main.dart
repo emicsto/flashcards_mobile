@@ -15,8 +15,7 @@ Future<void> main() async {
   storage.deleteAll();
   await signInSilently();
 
-  _initialRoute = await storage.read(key: "accessToken")
-      == null
+  _initialRoute = await storage.read(key: "accessToken") == null
       ? LoginViewRoute
       : HomeViewRoute;
 
@@ -32,11 +31,13 @@ class App extends StatelessWidget {
           brightness: Brightness.light,
           primarySwatch: Colors.teal,
           accentColor: Colors.cyan),
-      darkTheme:
-          ThemeData(brightness: Brightness.dark, primarySwatch: Colors.indigo, accentColor: Color(0xFF268979),
-              buttonTheme: ButtonThemeData(
-              buttonColor: Colors.white12,
-    )),
+      darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.indigo,
+          accentColor: Color(0xFF268979),
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.white12,
+          )),
       onGenerateRoute: router.generateRoute,
       initialRoute: _initialRoute,
       navigatorKey: navigatorKey,

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 const String HomeViewRoute = '/';
 const String LoginViewRoute = 'login';
 const String CardViewRoute = 'flashcard';
+const String EmptyDeckViewRoute = 'empty-deck';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -13,6 +14,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => HomePage(title: "Home"));
     case CardViewRoute:
       return MaterialPageRoute(builder: (context) => CardScreen(id: settings.arguments));
+    case EmptyDeckViewRoute:
+      return MaterialPageRoute(builder: (context) => CardScreen());
     default:
       return MaterialPageRoute(builder: (context) => Login(title: "Login"));
   }
