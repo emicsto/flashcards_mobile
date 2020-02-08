@@ -14,7 +14,7 @@ description: Flashcards
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -26,6 +26,7 @@ dependencies:
   dio: ^3.0.8
   flutter_auth_buttons: ^0.6.0
   flutter_svg: ^0.17.1
+  flip_card: ^0.4.4
 
 
 

@@ -1,9 +1,12 @@
 import 'package:flashcards/models/card_model.dart';
 import 'package:flashcards/repositories/card_repository.dart';
 import 'package:flashcards/utils/assessment.dart';
+import 'package:flashcards/utils/extended_flip_card_state.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
 class CardWidget extends StatefulWidget {
   final int id;
@@ -19,7 +22,7 @@ class CardWidget extends StatefulWidget {
 class CardWidgetState extends State<CardWidget> {
   var flashcards;
   var index = 0;
-  var isFront = true;
+  bool isFront = true;
 
   @override
   void initState() {
@@ -35,15 +38,9 @@ class CardWidgetState extends State<CardWidget> {
 
   nextCard() {
     setState(() {
+      cardKey.currentState.setFront();
       isFront = true;
       index++;
-    });
-  }
-
-  previousCard() {
-    setState(() {
-      isFront = true;
-      index--;
     });
   }
 
@@ -59,34 +56,30 @@ class CardWidgetState extends State<CardWidget> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var buttonsRow = Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: isFront
-                    ? Row()
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          RaisedButton(
-                            onPressed: () => assignAssessment(Assessment.again),
-                            child: Text("Again"),
-                          ),
-                          RaisedButton(
-                            onPressed: () => assignAssessment(Assessment.hard),
-                            child: Text("Hard"),
-                          ),
-                          RaisedButton(
-                            onPressed: () => assignAssessment(Assessment.easy),
-                            child: Text("Easy"),
-                          ),
-                          RaisedButton(
-                            onPressed: () => assignAssessment(Assessment.good),
-                            child: Text("Good"),
-                          ),
-                        ],
-                      ),
-              ),
+              child: isFront
+                  ? Container()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        RaisedButton(
+                          onPressed: () => assignAssessment(Assessment.again),
+                          child: Text("Again"),
+                        ),
+                        RaisedButton(
+                          onPressed: () => assignAssessment(Assessment.hard),
+                          child: Text("Hard"),
+                        ),
+                        RaisedButton(
+                          onPressed: () => assignAssessment(Assessment.easy),
+                          child: Text("Easy"),
+                        ),
+                        RaisedButton(
+                          onPressed: () => assignAssessment(Assessment.good),
+                          child: Text("Good"),
+                        ),
+                      ],
+                    ),
             );
-
 
             var card = Expanded(
               flex: 4,
@@ -94,30 +87,50 @@ class CardWidgetState extends State<CardWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Container(
-                    height: 500,
-                    width: 350,
-                    child: Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        textBaseline: TextBaseline.alphabetic,
-                        children: <Widget>[
-                          isFront
-                              ? Text(
-                                  snapshot.data[index].front,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25),
-                                )
-                              : Text(
-                                  snapshot.data[index].back,
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                        ],
+                  FlipCard(
+                    speed: 350,
+                    key: cardKey,
+                    onFlip: reverseCard,
+                    direction: FlipDirection.HORIZONTAL,
+                    front: Container(
+                      height: 500,
+                      width: 350,
+                      child: Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: <Widget>[
+                            Text(
+                              snapshot.data[index].front,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 25),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    back: Container(
+                      height: 500,
+                      width: 350,
+                      child: Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: <Widget>[
+                            Text(
+                              snapshot.data[index].back,
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -126,12 +139,11 @@ class CardWidgetState extends State<CardWidget> {
             );
 
             return GestureDetector(
-                onTap: () => reverseCard(),
                 child: Center(
-                  child: Column(
-                    children: <Widget>[card, buttonsRow],
-                  ),
-                ));
+              child: Column(
+                children: <Widget>[card, buttonsRow],
+              ),
+            ));
           }
           return Center(
               child: new Column(
