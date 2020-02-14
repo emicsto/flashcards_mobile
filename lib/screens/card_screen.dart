@@ -57,7 +57,7 @@ class _CardScreenState extends State<CardScreen> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data.isEmpty) {
-                    return EmptyDeck();
+                  return EmptyDeck();
                 } else {
                   var buttonsRow = Expanded(
                     child: isFront
@@ -89,6 +89,7 @@ class _CardScreenState extends State<CardScreen> {
                           ),
                   );
 
+                  var flashcard = snapshot.data[index];
                   var expanded = Expanded(
                     flex: 4,
                     child: Column(
@@ -102,14 +103,14 @@ class _CardScreenState extends State<CardScreen> {
                           direction: FlipDirection.HORIZONTAL,
                           front: Flashcard(
                             text: Text(
-                              snapshot.data[index].front,
+                              flashcard.front,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 25),
                             ),
                           ),
                           back: Flashcard(
                             text: Text(
-                              snapshot.data[index].back,
+                              flashcard.back,
                               style: TextStyle(fontSize: 20),
                             ),
                           ),
