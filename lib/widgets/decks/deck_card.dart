@@ -20,30 +20,30 @@ class DeckCard extends StatelessWidget {
     return GestureDetector(
         onTap: () => navigatorKey.currentState
             .pushNamed(CardViewRoute, arguments: index),
-        child: new Container(
+        child:  Container(
             height: 125,
             padding: const EdgeInsets.only(bottom: 5),
-            child: new Card(
+            child:  Card(
               elevation: 2,
-              child: new Column(
+              child:  Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  new ListTile(
-                    title: new Row(
+                   ListTile(
+                    title:  Row(
                       children: <Widget>[
-                        new Text(
+                         Text(
                           deck.name,
-                          style: new TextStyle(fontWeight: FontWeight.bold),
+                          style:  TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    subtitle: new Container(
+                    subtitle:  Container(
                       padding: const EdgeInsets.only(top: 15.0),
-                      child: new Text(
+                      child:  Text(
                         deck.quantity.toString() + " terms",
                         style:
-                            new TextStyle(color: Colors.grey, fontSize: 13.0),
+                             TextStyle(color: Colors.grey, fontSize: 13.0),
                       ),
                     ),
                   )

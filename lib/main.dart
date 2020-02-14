@@ -33,7 +33,7 @@ class App extends StatelessWidget {
           accentColor: Colors.cyan),
       darkTheme: ThemeData(
           brightness: Brightness.dark,
-          primarySwatch: Colors.indigo,
+          primarySwatch: Colors.teal,
           accentColor: Color(0xFF268979),
           buttonTheme: ButtonThemeData(
             buttonColor: Colors.white12,
