@@ -19,7 +19,7 @@ class DeckCard extends StatelessWidget {
     var deck = decks[index];
     return GestureDetector(
         onTap: () => navigatorKey.currentState
-            .pushNamed(CardViewRoute, arguments: index),
+            .pushNamed(CardViewRoute, arguments: deck.id),
         child:  Container(
             height: 125,
             padding: const EdgeInsets.only(bottom: 5),

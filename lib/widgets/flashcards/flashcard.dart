@@ -14,7 +14,7 @@ class Flashcard extends StatelessWidget {
       height: 500,
       width: 350,
       child: Card(
-        elevation: 5,
+        elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
