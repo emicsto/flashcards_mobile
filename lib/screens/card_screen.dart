@@ -21,13 +21,33 @@ class CardScreen extends StatefulWidget {
 
 class _CardScreenState extends State<CardScreen> {
   Future<List<CardModel>> flashcards;
+  List<CardModel> cards = [];
   int index = 0;
   bool isFront = true;
+  final firstPage = 0;
+  int nextPage = 0;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    flashcards = getFlashcardsByDeckId(widget.id);
+    loadFlashcards(firstPage);
+  }
+
+  loadFlashcards(int page) async {
+    if (mounted) {
+      setState(() => isLoading = true);
+    }
+
+    var newCards = await getFlashcardsByDeckId(widget.id, page);
+
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+        cards.addAll(newCards);
+        nextPage++;
+      });
+    }
   }
 
   reverseCard() {
@@ -41,6 +61,9 @@ class _CardScreenState extends State<CardScreen> {
       cardKey.currentState.setFront();
       isFront = true;
       index++;
+      if (index % 5 == 0) {
+        loadFlashcards(nextPage);
+      }
     });
   }
 
@@ -49,82 +72,76 @@ class _CardScreenState extends State<CardScreen> {
     nextCard();
   }
 
+  Widget buildScreen() {
+    return Center(
+        child: Column(
+      children: <Widget>[buildCard(), buildButtons()],
+    ));
+  }
+
+  Widget buildButtons() {
+    return Expanded(
+      child: isFront
+          ? Container()
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                RaisedButton(
+                  onPressed: () => assignAssessment(Assessment.again),
+                  child: Text("Again"),
+                ),
+                RaisedButton(
+                  onPressed: () => assignAssessment(Assessment.hard),
+                  child: Text("Hard"),
+                ),
+                RaisedButton(
+                  onPressed: () => assignAssessment(Assessment.easy),
+                  child: Text("Easy"),
+                ),
+                RaisedButton(
+                  onPressed: () => assignAssessment(Assessment.good),
+                  child: Text("Good"),
+                ),
+              ],
+            ),
+    );
+  }
+
+  Widget buildCard() {
+    return Expanded(
+      flex: 4,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          FlipCard(
+            speed: 350,
+            key: cardKey,
+            onFlip: reverseCard,
+            direction: FlipDirection.HORIZONTAL,
+            front: Flashcard(
+              text: Text(
+                cards.isNotEmpty ? cards[index].front : "",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
+            ),
+            back: Flashcard(
+              text: Text(
+                cards.isNotEmpty ? cards[index].back : "",
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder<List<CardModel>>(
-            future: flashcards,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data.isEmpty) {
-                  return EmptyDeck();
-                } else {
-                  var buttonsRow = Expanded(
-                    child: isFront
-                        ? Container()
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              RaisedButton(
-                                onPressed: () =>
-                                    assignAssessment(Assessment.again),
-                                child: Text("Again"),
-                              ),
-                              RaisedButton(
-                                onPressed: () =>
-                                    assignAssessment(Assessment.hard),
-                                child: Text("Hard"),
-                              ),
-                              RaisedButton(
-                                onPressed: () =>
-                                    assignAssessment(Assessment.easy),
-                                child: Text("Easy"),
-                              ),
-                              RaisedButton(
-                                onPressed: () =>
-                                    assignAssessment(Assessment.good),
-                                child: Text("Good"),
-                              ),
-                            ],
-                          ),
-                  );
-
-                  var flashcard = snapshot.data[index];
-                  var expanded = Expanded(
-                    flex: 4,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        FlipCard(
-                          speed: 350,
-                          key: cardKey,
-                          onFlip: reverseCard,
-                          direction: FlipDirection.HORIZONTAL,
-                          front: Flashcard(
-                            text: Text(
-                              flashcard.front,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 25),
-                            ),
-                          ),
-                          back: Flashcard(
-                            text: Text(
-                              flashcard.back,
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                  return Center(
-                      child: Column(
-                    children: <Widget>[expanded, buttonsRow],
-                  ));
-                }
-              }
-              return CircularProgressIndicatorCentered();
-            }));
+        body: isLoading && index == 0
+            ? CircularProgressIndicatorCentered()
+            : cards.isEmpty ? EmptyDeck() : buildScreen());
   }
 }
