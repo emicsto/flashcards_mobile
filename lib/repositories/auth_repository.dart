@@ -34,7 +34,7 @@ Future<void> getUserInfo() async {
 
     await storage.write(key: "name", value: user.name);
     await storage.write(key: "email", value: user.email);
-    await storage.write(key: "pictureUrl", value: user.pictureUrl);
+    await storage.write(key: "pictureUrl", value: user.pictureUrl ?? "");
   } else {
     throw Exception('Failed to get user info');
   }
