@@ -11,9 +11,9 @@ import 'package:flutter/material.dart';
 GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
 class CardScreen extends StatefulWidget {
-  final int id;
+  final int deckId;
 
-  CardScreen({Key key, this.id}) : super(key: key);
+  CardScreen({Key key, this.deckId}) : super(key: key);
 
   @override
   _CardScreenState createState() => _CardScreenState();
@@ -33,23 +33,21 @@ class _CardScreenState extends State<CardScreen> {
     super.initState();
     loadFlashcards(firstPage);
   }
+      loadFlashcards(int page) async {
+        if (mounted) {
+          setState(() => isLoading = true);
+        }
 
-  loadFlashcards(int page) async {
-    if (mounted) {
-      setState(() => isLoading = true);
-    }
+        var newCards = await getFlashcardsByDeckId(widget.deckId, page);
 
-    var newCards = await getFlashcardsByDeckId(widget.id, page);
-
-    if (mounted) {
-      setState(() {
-        isLoading = false;
-        cards.addAll(newCards);
-        nextPage++;
-      });
-    }
-  }
-
+        if (mounted) {
+          setState(() {
+            isLoading = false;
+            cards.addAll(newCards);
+            nextPage++;
+          });
+        }
+      }
   reverseCard() {
     setState(() {
       isFront = !isFront;
@@ -61,7 +59,7 @@ class _CardScreenState extends State<CardScreen> {
       cardKey.currentState.setFront();
       isFront = true;
       index++;
-      if (index % 5 == 0) {
+      if (index >= cards.length - 3) {
         loadFlashcards(nextPage);
       }
     });

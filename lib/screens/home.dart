@@ -34,6 +34,8 @@ class _HomePageState extends State<HomePage> {
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.black26,
+        elevation: 0,
         selectedItemColor: Colors.teal,
         iconSize: 25,
         items: const <BottomNavigationBarItem>[

@@ -32,18 +32,18 @@ class _SettingsState extends State<Settings> {
               style: TextStyle(fontSize: 16),
             ),
             onPressed: () =>
-                {importFile(deck.id), navigatorKey.currentState.pop()},
+                {importFlashcards(deck.id), navigatorKey.currentState.pop()},
           ))
         });
 
     return widgets;
   }
 
-  Future<void> importFile(int deckId) async {
+  Future<void> importFlashcards(int deckId) async {
     try {
       File file = await FilePicker.getFile();
       var flashcardsCsv = await file.readAsString();
-      await importFlashcards(deckId, flashcardsCsv);
+      await saveFlashcards(deckId, flashcardsCsv);
 
       Scaffold.of(context).showSnackBar(
           SnackBar(content: Text("Flashcards were successfully imported")));
@@ -106,7 +106,7 @@ class _SettingsState extends State<Settings> {
     return ListView(children: <Widget>[
       ListTile(
           trailing: IconButton(
-              icon: Icon(Icons.help_outline),
+              icon: Icon(Icons.help_outline, size: 20,),
               onPressed: () => showHelpDialog()),
           contentPadding:
               EdgeInsets.only(left: 16, right: 16, bottom: 0, top: 0),
