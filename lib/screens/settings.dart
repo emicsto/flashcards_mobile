@@ -4,8 +4,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flashcards/models/deck.dart';
 import 'package:flashcards/repositories/card_repository.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
+import 'package:flashcards/router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../main.dart';
 import 'login.dart';
 
 class Settings extends StatefulWidget {
@@ -25,16 +28,17 @@ class _SettingsState extends State<Settings> {
     List<Deck> decks = await fetchDecks();
     List<Widget> widgets = [];
 
-    decks.forEach((deck) => {
-          widgets.add(SimpleDialogOption(
-            child: Text(
-              deck.name,
-              style: TextStyle(fontSize: 16),
-            ),
-            onPressed: () =>
-                {importFlashcards(deck.id), navigatorKey.currentState.pop()},
-          ))
-        });
+    decks.forEach((deck) =>
+    {
+      widgets.add(SimpleDialogOption(
+        child: Text(
+          deck.name,
+          style: TextStyle(fontSize: 16),
+        ),
+        onPressed: () =>
+        {importFlashcards(deck.id), navigatorKey.currentState.pop()},
+      ))
+    });
 
     return widgets;
   }
@@ -54,22 +58,23 @@ class _SettingsState extends State<Settings> {
   }
 
   void showDecksDialog() async {
-    getDecksAsDialogOptions().then((decks) => {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return SimpleDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                  title: Text(
-                    'Choose a deck',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.teal),
-                  ),
-                  children: decks);
-            },
-          )
-        });
+    getDecksAsDialogOptions().then((decks) =>
+    {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0))),
+              title: Text(
+                'Choose a deck',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.teal),
+              ),
+              children: decks);
+        },
+      )
+    });
   }
 
   void showHelpDialog() async {
@@ -82,7 +87,7 @@ class _SettingsState extends State<Settings> {
                 borderRadius: BorderRadius.all(Radius.circular(5.0))),
             title: Text('Importing flashcards',
                 style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),
+                TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(bottom: 10),
@@ -109,16 +114,31 @@ class _SettingsState extends State<Settings> {
               icon: Icon(Icons.help_outline, size: 20,),
               onPressed: () => showHelpDialog()),
           contentPadding:
-              EdgeInsets.only(left: 16, right: 16, bottom: 0, top: 0),
+          EdgeInsets.only(left: 16, right: 16, bottom: 0, top: 0),
           title: Text(
             'Data',
             style: TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.teal, fontSize: 14),
+                fontWeight: FontWeight.bold,
+                color: Colors.teal,
+                fontSize: 14),
           )),
       ListTile(
         title: Text('Import flashcards'),
         onTap: () => showDecksDialog(),
+      ),
+      RaisedButton(
+        padding: EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 15),
+        child: Text("Log out", style: TextStyle(fontSize: 20),),
+        onPressed: () => signOut()
       )
+
     ]);
+
+  }
+
+  signOut() async {
+    await googleSignIn.signOut();
+    await storage.deleteAll();
+    navigatorKey.currentState.pushReplacementNamed(LoginViewRoute);
   }
 }

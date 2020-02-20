@@ -1,5 +1,4 @@
 import 'package:flashcards/router.dart';
-import 'package:flashcards/screens/home.dart';
 import 'package:flashcards/utils/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
