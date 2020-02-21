@@ -6,7 +6,6 @@ import 'package:flashcards/utils/http_dio.dart';
 import '../main.dart';
 
 Future<void> sendIdToken(String idToken) async {
-
   var _dio = await getHttpClient();
 
   final response = await _dio.post("/auth/token/sign-in",
@@ -38,4 +37,12 @@ Future<void> getUserInfo() async {
   } else {
     throw Exception('Failed to get user info');
   }
+}
+
+Future<void> deleteRefreshToken() async {
+  var _dio = await getHttpClient();
+  var refreshToken = await storage.read(key: "refreshToken");
+
+  final response = _dio.post("/auth/logout", data: json.encode({"refresh_token": refreshToken}));
+  print(response);
 }

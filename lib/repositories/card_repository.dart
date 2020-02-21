@@ -16,9 +16,9 @@ Future<List<CardModel>> getFlashcardsByDeckId(int deckId, int page) async {
 }
 
 Future<void> saveFlashcards(int deckId, String flashcards) async {
-  var _dio = await getHttpClient();
+  var dio = await getHttpClient();
 
-  final response = await _dio.post('/decks/$deckId/flashcards/import', data: jsonEncode({"flashcards": flashcards}));
+  final response = await dio.post('/decks/$deckId/flashcards/import', data: jsonEncode({"flashcards": flashcards}));
 
   if (response.statusCode != 200) {
     throw Exception('Failed to import flashcards');

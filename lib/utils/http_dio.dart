@@ -20,7 +20,7 @@ Future<Dio> getHttpClient() async {
   if (_accessToken != null) {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options) async {
-        await addAccessTokenToHeader(options);
+        await addAccessTokenToHeader(options, _accessToken);
       },
       onError: (DioError error) async {
         if (error.response?.statusCode == 401) {
@@ -70,7 +70,7 @@ void lockRequest(Dio dio) {
   dio.interceptors.errorLock.lock();
 }
 
-Future addAccessTokenToHeader(RequestOptions options) async {
-  var accessToken = "Bearer " + await storage.read(key: "accessToken");
+Future addAccessTokenToHeader(RequestOptions options, String accessToken) async {
+  accessToken = "Bearer " + accessToken;
   options.headers["Authorization"] = accessToken;
 }

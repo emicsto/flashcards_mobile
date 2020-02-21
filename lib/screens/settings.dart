@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flashcards/models/deck.dart';
+import 'package:flashcards/repositories/auth_repository.dart';
 import 'package:flashcards/repositories/card_repository.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
 import 'package:flashcards/router.dart';
@@ -22,6 +23,14 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
+  }
+
+
+  signOut() async {
+    await googleSignIn.signOut();
+    await deleteRefreshToken();
+    await storage.deleteAll();
+    navigatorKey.currentState.pushReplacementNamed(LoginViewRoute);
   }
 
   Future<List<Widget>> getDecksAsDialogOptions() async {
@@ -134,11 +143,5 @@ class _SettingsState extends State<Settings> {
 
     ]);
 
-  }
-
-  signOut() async {
-    await googleSignIn.signOut();
-    await storage.deleteAll();
-    navigatorKey.currentState.pushReplacementNamed(LoginViewRoute);
   }
 }
