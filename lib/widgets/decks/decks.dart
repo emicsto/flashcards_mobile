@@ -4,7 +4,10 @@ import 'package:flashcards/widgets/decks/deck_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
 class Decks extends StatefulWidget {
+  final decksStateKey = GlobalKey<DecksState>();
+
   @override
   DecksState createState() {
     return new DecksState();

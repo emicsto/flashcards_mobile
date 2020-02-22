@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flashcards/utils/http_dio.dart';
 import 'package:flashcards/models/deck.dart';
 
@@ -11,3 +13,14 @@ Future<List<Deck>> fetchDecks() async {
     throw Exception('Failed to load decks');
   }
 }
+
+Future<void> saveDeck(String name) async {
+  var dio = await getHttpClient();
+
+  final response = await dio.post('/decks', data: jsonEncode({"name": name}));
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to add deck');
+  }
+}
+
