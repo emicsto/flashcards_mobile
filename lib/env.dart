@@ -5,7 +5,7 @@ const testConfig = {
 };
 
 const productionConfig = {
-  'baseUrl': 'https://app-flashcards.herokuapp.com/api',
+  'baseUrl': 'http://192.168.0.192:8080/api',
 };
 
 final environment = isProduction ? productionConfig : testConfig;
