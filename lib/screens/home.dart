@@ -23,11 +23,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void addDeckModal(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return AddDeckForm();
-        });
+    showModalBottomSheet(context: context, builder: (_) => AddDeckForm());
   }
 
   @override
@@ -79,10 +75,13 @@ class AddDeckForm extends StatefulWidget {
 
 class AddDeckFormState extends State<AddDeckForm> {
   final deckController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   void _handleSaveDeck(BuildContext context) {
-    saveDeck(deckController.text);
-    Navigator.of(context).pop();
+    if (_formKey.currentState.validate()) {
+      saveDeck(deckController.text);
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -93,27 +92,36 @@ class AddDeckFormState extends State<AddDeckForm> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Container(
-            padding: EdgeInsets.only(
-                right: 35,
-                left: 35,
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  controller: deckController,
-                  decoration: InputDecoration(hintText: 'Enter a deck name'),
-                  autofocus: true,
-                ),
-                Container(
-                  alignment: Alignment.bottomRight,
-                  child: FlatButton(
-                    onPressed: () => _handleSaveDeck(context),
-                    child: Text("Add deck"),
+    return Form(
+      key: _formKey,
+      child: SingleChildScrollView(
+          child: Container(
+              padding: EdgeInsets.only(
+                  right: 35,
+                  left: 35,
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    controller: deckController,
+                    decoration: InputDecoration(hintText: 'Enter a deck name'),
+                    autofocus: true,
+                    validator: (value) {
+                      if (value.trim().isEmpty) {
+                        return 'Deck name can not be empty';
+                      }
+                      return null;
+                    },
                   ),
-                )
-              ],
-            )));
+                  Container(
+                    alignment: Alignment.bottomRight,
+                    child: FlatButton(
+                      onPressed: () => _handleSaveDeck(context),
+                      child: Text("Add deck"),
+                    ),
+                  )
+                ],
+              ))),
+    );
   }
 }
