@@ -25,11 +25,11 @@ class _SettingsState extends State<Settings> {
     super.initState();
   }
 
-
   signOut() async {
     await googleSignIn.signOut();
     await deleteRefreshToken();
-    await storage.deleteAll();
+    await storage.delete(key: "accessToken");
+    await storage.delete(key: "refreshToken");
     navigatorKey.currentState.pushReplacementNamed(LoginViewRoute);
   }
 
