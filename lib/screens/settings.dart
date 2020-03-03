@@ -52,7 +52,7 @@ class _SettingsState extends State<Settings> {
     return widgets;
   }
 
-  Future<void> importFlashcards(int deckId) async {
+  Future<void> importFlashcards(String deckId) async {
     try {
       File file = await FilePicker.getFile();
       var flashcardsCsv = await file.readAsString();

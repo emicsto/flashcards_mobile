@@ -4,7 +4,7 @@ import 'package:flashcards/models/card_model.dart';
 import 'package:flashcards/utils/http_dio.dart';
 
 
-Future<List<CardModel>> getFlashcardsByDeckId(int deckId, int page) async {
+Future<List<CardModel>> getFlashcardsByDeckId(String deckId, int page) async {
   var dio = await getHttpClient();
   final response = await dio.get('/decks/$deckId/flashcards', queryParameters: {"page": page, "size": 6});
 
@@ -15,7 +15,7 @@ Future<List<CardModel>> getFlashcardsByDeckId(int deckId, int page) async {
   }
 }
 
-Future<void> saveFlashcards(int deckId, String flashcards) async {
+Future<void> saveFlashcards(String deckId, String flashcards) async {
   var dio = await getHttpClient();
 
   final response = await dio.post('/decks/$deckId/flashcards/import', data: jsonEncode({"flashcards": flashcards}));

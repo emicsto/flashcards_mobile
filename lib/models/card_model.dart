@@ -6,7 +6,7 @@ part 'card_model.g.dart';
 class CardModel {
   CardModel(this.id, this.front, this.back);
 
-  final int id;
+  final String id;
   final String front;
   final String back;
 

@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
 class CardScreen extends StatefulWidget {
-  final int deckId;
+  final String deckId;
 
   CardScreen({Key key, this.deckId}) : super(key: key);
 

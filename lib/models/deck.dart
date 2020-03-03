@@ -6,7 +6,7 @@ part 'deck.g.dart';
 class Deck {
   Deck({this.id, this.name, this.quantity});
 
-  final int id;
+  final String id;
   final String name;
   final int quantity;
 
