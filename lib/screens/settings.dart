@@ -25,13 +25,7 @@ class _SettingsState extends State<Settings> {
     super.initState();
   }
 
-  signOut() async {
-    await googleSignIn.signOut();
-    await deleteRefreshToken();
-    await storage.delete(key: "accessToken");
-    await storage.delete(key: "refreshToken");
-    navigatorKey.currentState.pushReplacementNamed(LoginViewRoute);
-  }
+
 
   Future<List<Widget>> getDecksAsDialogOptions() async {
     List<Deck> decks = await fetchDecks();
@@ -138,7 +132,7 @@ class _SettingsState extends State<Settings> {
       RaisedButton(
         padding: EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 15),
         child: Text("Log out", style: TextStyle(fontSize: 20),),
-        onPressed: () => signOut()
+        onPressed: () => AuthRepository().signOut()
       )
 
     ]);

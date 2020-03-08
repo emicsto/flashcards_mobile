@@ -1,27 +1,40 @@
-import 'package:flashcards/router.dart';
-import 'package:flashcards/utils/auth.dart';
+import 'package:flashcards/repositories/auth_repository.dart';
+import 'package:flashcards/screens/home.dart';
+import 'package:flashcards/widgets/layouts/circular_progress_indicator_centered.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flashcards/router.dart' as router;
 
+import 'authentication/authentication_bloc.dart';
+import 'authentication/authentication_event.dart';
+import 'authentication/authentication_state.dart';
 import 'screens/login.dart';
 
 final storage = new FlutterSecureStorage();
-var _initialRoute;
 
 Future<void> main() async {
+  final authRepository = AuthRepository();
+
   WidgetsFlutterBinding.ensureInitialized();
-  storage.deleteAll();
-  await signInSilently();
 
-  _initialRoute = await storage.read(key: "accessToken") == null
-      ? LoginViewRoute
-      : HomeViewRoute;
 
-  runApp(App());
+  runApp(
+    BlocProvider<AuthenticationBloc>(
+      create: (context) {
+        return AuthenticationBloc(authRepository: authRepository)
+          ..add(AppStarted());
+      },
+      child: App(authRepository: authRepository),
+    ),
+  );
 }
 
 class App extends StatelessWidget {
+  final AuthRepository authRepository;
+
+  App({Key key, @required this.authRepository}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,8 +51,23 @@ class App extends StatelessWidget {
             buttonColor: Colors.white12,
           )),
       onGenerateRoute: router.generateRoute,
-      initialRoute: _initialRoute,
+//      initialRoute: _initialRoute,
       navigatorKey: navigatorKey,
+      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (context, state) {
+          print(state.runtimeType.toString());
+          if (state is AuthenticationAuthenticated) {
+            return HomePage();
+          }
+          if (state is AuthenticationUnauthenticated) {
+            return Login(authRepository: authRepository,);
+          }
+          if (state is AuthenticationLoading) {
+            return CircularProgressIndicatorCentered();
+          }
+          return CircularProgressIndicatorCentered();
+        },
+      ),
     );
   }
 }
