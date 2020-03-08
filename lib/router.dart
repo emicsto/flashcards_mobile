@@ -1,6 +1,6 @@
 import 'package:flashcards/screens/card_screen.dart';
 import 'package:flashcards/screens/home.dart';
-import 'package:flashcards/screens/login.dart';
+import 'package:flashcards/login/login_page.dart';
 import 'package:flutter/material.dart';
 
 const String HomeViewRoute = '/';

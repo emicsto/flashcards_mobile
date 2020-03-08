@@ -1,54 +1,10 @@
-import 'package:flashcards/authentication/bloc.dart';
-import 'package:flashcards/login/bloc.dart';
-import 'package:flashcards/repositories/auth_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
-GoogleSignIn googleSignIn = new GoogleSignIn(
-  scopes: ['email'],
-);
-
-final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
-
-class Login extends StatelessWidget {
-  final AuthRepository authRepository;
-
-  Login({Key key, @required this.authRepository})
-      : assert(authRepository != null),
-        super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-        backgroundColor: Color(0xFF268979),
-      body: BlocProvider(
-        create: (context) {
-          return LoginBloc(
-            authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-            authRepository: authRepository,
-          );
-        },
-        child: BlocListener<LoginBloc, LoginState>(
-          listener: (context, state) {
-            if (state is LoginFailure) {
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('${state.error}'),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
-          },
-          child: LoginForm(),
-        )
-      ),
-    );
-  }
-}
+import 'bloc/bloc.dart';
 
 class LoginForm extends StatelessWidget {
   LoginForm({

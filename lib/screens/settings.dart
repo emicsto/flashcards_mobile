@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flashcards/models/deck.dart';
-import 'package:flashcards/repositories/auth_repository.dart';
+import 'package:flashcards/authentication/authentication_repository.dart';
 import 'package:flashcards/repositories/card_repository.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
 import 'package:flashcards/router.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../main.dart';
-import 'login.dart';
+import '../login/login_page.dart';
 
 class Settings extends StatefulWidget {
   Settings({Key key}) : super(key: key);
@@ -132,7 +132,7 @@ class _SettingsState extends State<Settings> {
       RaisedButton(
         padding: EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 15),
         child: Text("Log out", style: TextStyle(fontSize: 20),),
-        onPressed: () => AuthRepository().signOut()
+        onPressed: () => AuthenticationRepository().signOut()
       )
 
     ]);

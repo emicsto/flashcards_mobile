@@ -1,7 +1,7 @@
 import 'package:flashcards/models/deck.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flashcards/screens/login.dart';
+import 'package:flashcards/login/login_page.dart';
 import 'package:flashcards/router.dart';
 
 class DeckCard extends StatelessWidget {

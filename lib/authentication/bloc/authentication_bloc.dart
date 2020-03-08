@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flashcards/repositories/auth_repository.dart';
+import 'package:flashcards/authentication/authentication_repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import './bloc.dart';
+import 'bloc.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final AuthRepository authRepository;
+  final AuthenticationRepository authenticationRepository;
   final storage = new FlutterSecureStorage();
 
-  AuthenticationBloc({@required this.authRepository})
-      : assert(authRepository != null);
+  AuthenticationBloc({@required this.authenticationRepository})
+      : assert(authenticationRepository != null);
 
   @override
   AuthenticationState get initialState => AuthenticationUninitialized();
@@ -22,9 +22,9 @@ class AuthenticationBloc
       ) async* {
     if (event is AppStarted) {
       await storage.deleteAll();
-      await authRepository.signInSilently();
+      await authenticationRepository.signInSilently();
 
-      final bool hasToken = await authRepository.hasToken();
+      final bool hasToken = await authenticationRepository.hasToken();
       if (hasToken) {
         yield AuthenticationAuthenticated();
       } else {
@@ -38,7 +38,7 @@ class AuthenticationBloc
 
     if (event is LoggedOut) {
       yield AuthenticationLoading();
-      await authRepository.signOut();
+      await authenticationRepository.signOut();
       yield AuthenticationUnauthenticated();
     }
   }

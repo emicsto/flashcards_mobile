@@ -1,19 +1,21 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flashcards/authentication/authentication_bloc.dart';
-import 'package:flashcards/authentication/authentication_event.dart';
-import 'package:flashcards/repositories/auth_repository.dart';
+import 'package:flashcards/authentication/authentication_repository.dart';
+import 'package:flashcards/authentication/bloc/authentication_bloc.dart';
+import 'package:flashcards/authentication/bloc/authentication_event.dart';
 import 'package:flutter/cupertino.dart';
-import './bloc.dart';
+
+import 'login_event.dart';
+import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final AuthRepository authRepository;
+  final AuthenticationRepository authenticationRepository;
   final AuthenticationBloc authenticationBloc;
 
   LoginBloc({
-    @required this.authRepository,
+    @required this.authenticationRepository,
     @required this.authenticationBloc,
-  })  : assert(authRepository != null),
+  })  : assert(authenticationRepository != null),
         assert(authenticationBloc != null);
 
   @override
@@ -26,7 +28,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginLoading();
 
       try {
-        await authRepository.loginWithGoogle();
+        await authenticationRepository.loginWithGoogle();
         authenticationBloc.add(LoggedIn());
         yield LoginInitial();
       } catch (error) {
