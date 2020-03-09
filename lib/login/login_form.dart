@@ -36,22 +36,24 @@ class LoginForm extends StatelessWidget {
 
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              loginText,
-              loginImage,
-              Container(
-                height: 50,
-                child: state is LoginLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : GoogleSignInButton(
-                    onPressed: state is! LoginLoading
-                        ? _onLoginButtonPressed
-                        : null),
-              ),
-            ]);
+        return Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                loginText,
+                loginImage,
+                Container(
+                  height: 50,
+                  child: state is LoginLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : GoogleSignInButton(
+                      onPressed: state is! LoginLoading
+                          ? _onLoginButtonPressed
+                          : null),
+                ),
+              ]),
+        );
       },
     );
   }
