@@ -3,11 +3,16 @@ import 'package:flashcards/login/login_page.dart';
 import 'package:flashcards/models/token_pair.dart';
 import 'package:flashcards/models/user.dart';
 import 'package:flashcards/utils/http_dio.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../main.dart';
 import '../router.dart';
 
 class AuthenticationRepository {
+  GoogleSignIn googleSignIn = GoogleSignIn(
+    scopes: ['email'],
+  );
+
   Future<void> sendIdToken(String idToken) async {
     var _dio = await getHttpClient();
 

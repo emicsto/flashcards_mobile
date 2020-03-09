@@ -7,10 +7,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import 'login_form.dart';
 
-GoogleSignIn googleSignIn = new GoogleSignIn(
-  scopes: ['email'],
-);
-
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 class LoginPage extends StatelessWidget {
@@ -22,30 +18,16 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-        backgroundColor: Color(0xFF268979),
+      backgroundColor: Colors.white10,
       body: BlocProvider(
-        create: (context) {
-          return LoginBloc(
-            authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-            authenticationRepository: authenticationRepository,
-          );
-        },
-        child: BlocListener<LoginBloc, LoginState>(
-          listener: (context, state) {
-            if (state is LoginFailure) {
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('${state.error}'),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
+          create: (context) {
+            return LoginBloc(
+              authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
+              authenticationRepository: authenticationRepository,
+            );
           },
-          child: LoginForm(),
-        )
-      ),
+          child: LoginForm()),
     );
   }
 }
