@@ -54,9 +54,8 @@ class App extends StatelessWidget {
       navigatorKey: navigatorKey,
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
-          print(state.runtimeType.toString());
           if (state is AuthenticationAuthenticated) {
-            return HomePage();
+            return HomePage(authenticationRepository: authenticationRepository,);
           }
           if (state is AuthenticationUnauthenticated) {
             return LoginPage(authenticationRepository: authenticationRepository,);

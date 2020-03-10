@@ -16,6 +16,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => CardScreen(deckId: settings.arguments));
     case EmptyDeckViewRoute:
       return MaterialPageRoute(builder: (context) => CardScreen());
+    case LoginViewRoute:
+      return MaterialPageRoute(builder: (context) => LoginPage(authenticationRepository:  settings.arguments,));
     default:
       return MaterialPageRoute(builder: (context) => HomePage(title: "Home"));
   }

@@ -1,11 +1,14 @@
+import 'package:flashcards/authentication/authentication_repository.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
 import 'package:flashcards/screens/settings.dart';
 import 'package:flashcards/widgets/decks/decks.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+  final AuthenticationRepository authenticationRepository;
   final String title;
+
+  HomePage({Key key, this.title, @required this.authenticationRepository}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -13,8 +16,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-
-  static List<Widget> _widgetOptions = <Widget>[Decks(), Settings()];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -35,7 +36,7 @@ class _HomePageState extends State<HomePage> {
           child: Text("Flashcards"),
         ),
       ),
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: <Widget>[Decks(), Settings(authenticationRepository:  widget.authenticationRepository,)].elementAt(_selectedIndex),
       floatingActionButton: _selectedIndex == 0
           ? FloatingActionButton(
               onPressed: () {

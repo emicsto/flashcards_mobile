@@ -66,13 +66,9 @@ class AuthenticationRepository {
   }
 
   Future<void> signInSilently() async {
-    try {
       var result = await googleSignIn.signInSilently();
       var googleKey = await result?.authentication;
       await sendIdToken(googleKey?.idToken);
-    } on Exception {
-//      loginWithGoogle();
-    }
   }
 
   Future<void> signOut() async {
@@ -80,7 +76,6 @@ class AuthenticationRepository {
     await deleteRefreshToken();
     await storage.delete(key: "accessToken");
     await storage.delete(key: "refreshToken");
-    navigatorKey.currentState.pushReplacementNamed(LoginViewRoute);
   }
 
   Future<bool> hasToken() async {

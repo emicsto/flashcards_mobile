@@ -1,19 +1,22 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flashcards/authentication/bloc/bloc.dart';
+import 'package:flashcards/login/bloc/bloc.dart';
 import 'package:flashcards/models/deck.dart';
 import 'package:flashcards/authentication/authentication_repository.dart';
 import 'package:flashcards/repositories/card_repository.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
-import 'package:flashcards/router.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../main.dart';
 import '../login/login_page.dart';
+import '../router.dart';
 
 class Settings extends StatefulWidget {
-  Settings({Key key}) : super(key: key);
+  final AuthenticationRepository authenticationRepository;
+
+  Settings({Key key, @required this.authenticationRepository}) : super(key: key);
 
   @override
   _SettingsState createState() => _SettingsState();
@@ -25,23 +28,20 @@ class _SettingsState extends State<Settings> {
     super.initState();
   }
 
-
-
   Future<List<Widget>> getDecksAsDialogOptions() async {
     List<Deck> decks = await fetchDecks();
     List<Widget> widgets = [];
 
-    decks.forEach((deck) =>
-    {
-      widgets.add(SimpleDialogOption(
-        child: Text(
-          deck.name,
-          style: TextStyle(fontSize: 16),
-        ),
-        onPressed: () =>
-        {importFlashcards(deck.id), navigatorKey.currentState.pop()},
-      ))
-    });
+    decks.forEach((deck) => {
+          widgets.add(SimpleDialogOption(
+            child: Text(
+              deck.name,
+              style: TextStyle(fontSize: 16),
+            ),
+            onPressed: () =>
+                {importFlashcards(deck.id), navigatorKey.currentState.pop()},
+          ))
+        });
 
     return widgets;
   }
@@ -61,23 +61,22 @@ class _SettingsState extends State<Settings> {
   }
 
   void showDecksDialog() async {
-    getDecksAsDialogOptions().then((decks) =>
-    {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0))),
-              title: Text(
-                'Choose a deck',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.teal),
-              ),
-              children: decks);
-        },
-      )
-    });
+    getDecksAsDialogOptions().then((decks) => {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return SimpleDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                  title: Text(
+                    'Choose a deck',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.teal),
+                  ),
+                  children: decks);
+            },
+          )
+        });
   }
 
   void showHelpDialog() async {
@@ -90,7 +89,7 @@ class _SettingsState extends State<Settings> {
                 borderRadius: BorderRadius.all(Radius.circular(5.0))),
             title: Text('Importing flashcards',
                 style:
-                TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(bottom: 10),
@@ -111,31 +110,48 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: <Widget>[
-      ListTile(
-          trailing: IconButton(
-              icon: Icon(Icons.help_outline, size: 20,),
-              onPressed: () => showHelpDialog()),
-          contentPadding:
-          EdgeInsets.only(left: 16, right: 16, bottom: 0, top: 0),
-          title: Text(
-            'Data',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.teal,
-                fontSize: 14),
-          )),
-      ListTile(
-        title: Text('Import flashcards'),
-        onTap: () => showDecksDialog(),
+    return BlocListener<AuthenticationBloc, AuthenticationState>(
+      listener: (context, state) {
+        if (state is AuthenticationUnauthenticated) {
+          navigatorKey.currentState.pushReplacementNamed(LoginViewRoute, arguments: widget.authenticationRepository);
+        }
+      },
+      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (context, state) {
+          return ListView(children: <Widget>[
+            ListTile(
+                trailing: IconButton(
+                    icon: Icon(
+                      Icons.help_outline,
+                      size: 20,
+                    ),
+                    onPressed: () => showHelpDialog()),
+                contentPadding:
+                    EdgeInsets.only(left: 16, right: 16, bottom: 0, top: 0),
+                title: Text(
+                  'Data',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.teal,
+                      fontSize: 14),
+                )),
+            ListTile(
+              title: Text('Import flashcards'),
+              onTap: () => showDecksDialog(),
+            ),
+            RaisedButton(
+                padding:
+                    EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 15),
+                child: Text(
+                  "Log out",
+                  style: TextStyle(fontSize: 20),
+                ),
+                onPressed: () {
+                  BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
+                })
+          ]);
+        },
       ),
-      RaisedButton(
-        padding: EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 15),
-        child: Text("Log out", style: TextStyle(fontSize: 20),),
-        onPressed: () => AuthenticationRepository().signOut()
-      )
-
-    ]);
-
+    );
   }
 }
