@@ -18,8 +18,3 @@ class DecksLoaded extends DeckState {
 
 class DeckNotLoaded extends DeckState {}
 
-class ShowDeck extends DeckState {
-  final String id;
-
-  const ShowDeck(this.id);
-}

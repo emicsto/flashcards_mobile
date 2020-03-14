@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flashcards/deck/deck_repository.dart';
+import 'package:flashcards/login/login_page.dart';
 import 'package:flutter/widgets.dart';
+import '../../router.dart';
 import './bloc.dart';
 
 class DeckBloc extends Bloc<DeckEvent, DeckState> {
@@ -22,7 +24,9 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
       var decks = await deckRepository.fetchDecks();
       yield DecksLoaded(decks);
     } else if (event is ShowDeckTapped) {
-      yield ShowDeck(event.id);
+      navigatorKey.currentState
+          .pushNamed(CardViewRoute, arguments: event.id);
+//      yield ShowDeck(event.id);
     }
   }
 }
