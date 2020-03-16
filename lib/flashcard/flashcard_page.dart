@@ -36,9 +36,10 @@ class _CardScreenState extends State<CardScreen> {
 
   nextCard(int index, int page) {
     BlocProvider.of<CounterBloc>(context).add(DoAction(index + 1, page));
-
     setState(() {
-      cardKey.currentState.setFront();
+      if(!cardKey.currentState.isFront) {
+        cardKey.currentState.setFront();
+      }
     });
   }
 
