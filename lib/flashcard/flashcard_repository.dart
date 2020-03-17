@@ -8,7 +8,7 @@ class FlashcardRepository {
   Future<List<CardModel>> getFlashcardsByDeckId({String deckId, int page = 0}) async {
     var dio = await getHttpClient();
     final response = await dio.get('/decks/$deckId/flashcards',
-        queryParameters: {"page": page, "size": 6});
+        queryParameters: {"page": page, "size": 3});
 
     if (response.statusCode == 200) {
       return response.data.map((card) => CardModel.fromJson(card)).cast<

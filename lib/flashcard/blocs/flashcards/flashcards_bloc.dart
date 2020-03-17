@@ -24,6 +24,8 @@ class FlashcardsBloc extends Bloc<FlashcardsEvent, FlashcardsState> {
     if (event is LoadFlashcards) {
       var flashcards = await flashcardRepository.getFlashcardsByDeckId(
           deckId: event.deckId, page: event.page);
+
+print("1: "+  event.flashcards.length.toString());
 //      if(event.page == 0) {
 //        counterBloc.add(CounterEvent.reset);
 //      }
@@ -31,7 +33,15 @@ class FlashcardsBloc extends Bloc<FlashcardsEvent, FlashcardsState> {
       if (flashcards.isEmpty) {
         yield NoFlashcards();
       } else {
-        yield FlashcardsLoaded(flashcards);
+        yield FlashcardsLoaded(flashcards, event.page, event.index, true);
+      }
+    } else     if (event is IncrementIndex) {
+      print("2: "+  event.flashcards.length.toString());
+
+      if (event.flashcards.isEmpty) {
+        yield NoFlashcards();
+      } else {
+        yield FlashcardsLoaded(event.flashcards, event.page, event.index + 1, false);
       }
     }
   }

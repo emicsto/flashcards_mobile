@@ -8,7 +8,6 @@ import 'package:flashcards/utils/extended_flip_card_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'blocs/counter/bloc.dart';
 import 'blocs/flashcards/bloc.dart';
 
 GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
@@ -24,28 +23,26 @@ class CardScreen extends StatefulWidget {
 
 class _CardScreenState extends State<CardScreen> {
   Future<List<CardModel>> flashcards;
-  List<CardModel> cards = [];
+//  List<CardModel> cards = [];
 
-  //TODO: implement lazy loading
-  loadNextPage(int index, int page) async {
-//    BlocProvider.of<FlashcardsBloc>(context)
-//        .add(LoadFlashcards(widget.deckId, page));
-//    BlocProvider.of<CounterBloc>(context).add(DoAction(index, page));
-
+  loadNextPage(int index, int page, List<CardModel> cards) async {
+    BlocProvider.of<FlashcardsBloc>(context)
+        .add(LoadFlashcards(cards, widget.deckId, page, index));
   }
 
-  nextCard(int index, int page) {
-    BlocProvider.of<CounterBloc>(context).add(DoAction(index + 1, page));
+  nextCard(int index, int page, List<CardModel> cards) {
+    BlocProvider.of<FlashcardsBloc>(context)
+        .add(IncrementIndex(cards, widget.deckId, page, index));
     setState(() {
-      if(!cardKey.currentState.isFront) {
+      if (!cardKey.currentState.isFront) {
         cardKey.currentState.setFront();
       }
     });
   }
 
   //TODO implement correctly
-  assignAssessment(Assessment assessment, int index, int page) {
-    nextCard(index, page);
+  assignAssessment(Assessment assessment, int index, int page, List<CardModel> list) {
+    nextCard(index, page, list);
   }
 
   Widget buildScreen(BuildContext context) {
@@ -56,11 +53,11 @@ class _CardScreenState extends State<CardScreen> {
   }
 
   Widget buildButtons() {
-    return BlocListener<CounterBloc, CounterState>(
+    return BlocListener<FlashcardsBloc, FlashcardsState>(
       listener: (context, state) {},
-      child: BlocBuilder<CounterBloc, CounterState>(
+      child: BlocBuilder<FlashcardsBloc, FlashcardsState>(
         builder: (context, state) {
-          if (state is CounterInitial) {
+          if (state is FlashcardsLoaded) {
             return Expanded(
 //      TODO: fix
               child: false
@@ -70,22 +67,22 @@ class _CardScreenState extends State<CardScreen> {
                       children: <Widget>[
                         RaisedButton(
                           onPressed: () => assignAssessment(
-                              Assessment.again, state.index, state.page),
+                              Assessment.again, state.index, state.page, state.flashcards),
                           child: Text("Again"),
                         ),
                         RaisedButton(
                           onPressed: () => assignAssessment(
-                              Assessment.hard, state.index, state.page),
+                              Assessment.hard, state.index, state.page, state.flashcards),
                           child: Text("Hard"),
                         ),
                         RaisedButton(
                           onPressed: () => assignAssessment(
-                              Assessment.easy, state.index, state.page),
+                              Assessment.easy, state.index, state.page, state.flashcards),
                           child: Text("Easy"),
                         ),
                         RaisedButton(
                           onPressed: () => assignAssessment(
-                              Assessment.good, state.index, state.page),
+                              Assessment.good, state.index, state.page, state.flashcards),
                           child: Text("Good"),
                         ),
                       ],
@@ -99,39 +96,38 @@ class _CardScreenState extends State<CardScreen> {
   }
 
   Widget buildCard(BuildContext context) {
-    return BlocListener<CounterBloc, CounterState>(
+    return BlocListener<FlashcardsBloc, FlashcardsState>(
       listener: (context, state) {
-        if (state is CounterInitial) {
-
-//          if (state.index >= cards.length - 3) {
-//            loadNextPage(state.index, state.page + 1);
-//          }
+        if(state is FlashcardsLoaded) {
+          if (state.index >= state.flashcards.length - 3) {
+              loadNextPage(state.index, state.page + 1, state.flashcards);
+          }
         }
       },
-      child: BlocBuilder<CounterBloc, CounterState>(
+      child: BlocBuilder<FlashcardsBloc, FlashcardsState>(
         builder: (context, state) {
-          if (state is CounterInitial) {
-
+          if (state is FlashcardsLoaded) {
             return Expanded(
               flex: 4,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
+                  Text(state.flashcards.length.toString()),
                   FlipCard(
                     speed: 350,
                     key: cardKey,
                     direction: FlipDirection.HORIZONTAL,
                     front: Flashcard(
                       text: Text(
-                        cards.isNotEmpty ? cards[state.index].front : "",
+                        state.flashcards.isNotEmpty ? state.flashcards[state.index].front : "",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 25),
                       ),
                     ),
                     back: Flashcard(
                       text: Text(
-                        cards.isNotEmpty ? cards[state.index].back : "",
+                        state.flashcards.isNotEmpty ? state.flashcards[state.index].back : "",
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
@@ -152,7 +148,11 @@ class _CardScreenState extends State<CardScreen> {
         body: BlocListener<FlashcardsBloc, FlashcardsState>(
       listener: (context, state) {
         if (state is FlashcardsLoaded) {
-          cards.addAll(state.flashcards);
+          if(state.newCards) {
+//            print(cards.length);
+//            cards.addAll(state.flashcards);
+//            print(cards.length);
+          }
         }
       },
       child: BlocBuilder<FlashcardsBloc, FlashcardsState>(

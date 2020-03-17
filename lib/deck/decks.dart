@@ -9,6 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Decks extends StatefulWidget {
   final decksStateKey = GlobalKey<DecksState>();
+  final DeckRepository deckRepository;
+
+  Decks({Key key, @required this.deckRepository})
+      : assert(deckRepository != null),
+        super(key: key);
+
 
   @override
   DecksState createState() {
@@ -34,35 +40,31 @@ class DecksState extends State<Decks> {
     listener: (context, state) {
 
     },
-      child: BlocProvider(
-        create: (BuildContext context) => DeckBloc(deckRepository: DeckRepository()),
-        child: BlocBuilder<DeckBloc, DeckState>(
-          builder: (context, state) {
-            print(state);
-            if (state is DeckInitial) {
-              BlocProvider.of<DeckBloc>(context).add(LoadDecks());
-            }
+      child: BlocBuilder<DeckBloc, DeckState>(
+        builder: (context, state) {
+          if (state is DeckInitial) {
+            BlocProvider.of<DeckBloc>(context).add(LoadDecks());
+          }
 
-            if (state is DecksLoaded) {
-              var decks = state.decks;
+          if (state is DecksLoaded) {
+            var decks = state.decks;
 
-              return ListView.builder(
-                padding: EdgeInsets.only(top: 20, bottom: 25, left: 15, right: 15),
-                itemCount: decks.length,
-                itemBuilder: (context, i) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    i == 0 ? header : Container(),
-                    DeckCard(index: i, decks: decks)
-                  ],
-                ),
-              );
-            } else if (state is DeckLoading) {
-              return CircularProgressIndicatorCentered();
-            }
+            return ListView.builder(
+              padding: EdgeInsets.only(top: 20, bottom: 25, left: 15, right: 15),
+              itemCount: decks.length,
+              itemBuilder: (context, i) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  i == 0 ? header : Container(),
+                  DeckCard(index: i, decks: decks)
+                ],
+              ),
+            );
+          } else if (state is DeckLoading) {
             return CircularProgressIndicatorCentered();
-          },
-        )
+          }
+          return CircularProgressIndicatorCentered();
+        },
       )
     );
   }

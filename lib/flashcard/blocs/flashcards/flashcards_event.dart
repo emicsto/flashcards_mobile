@@ -1,3 +1,4 @@
+import 'package:flashcards/models/card_model.dart';
 import 'package:flashcards/widgets/flashcards/flashcard.dart';
 import 'package:meta/meta.dart';
 
@@ -7,10 +8,21 @@ abstract class FlashcardsEvent {
 }
 
 class LoadFlashcards extends FlashcardsEvent {
+  final List<CardModel> flashcards;
   final String deckId;
   final int page;
+  final int index;
 
-  const LoadFlashcards(this.deckId, this.page);
+  const LoadFlashcards(this.flashcards, this.deckId, this.page, this.index);
+}
+
+class IncrementIndex extends FlashcardsEvent {
+  final List<CardModel> flashcards;
+  final String deckId;
+  final int page;
+  final int index;
+
+  const IncrementIndex(this.flashcards, this.deckId, this.page, this.index);
 }
 
 class AddFlashcard extends FlashcardsEvent {
