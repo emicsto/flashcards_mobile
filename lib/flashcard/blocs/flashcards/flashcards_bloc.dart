@@ -11,8 +11,10 @@ class FlashcardsBloc extends Bloc<FlashcardsEvent, FlashcardsState> {
   final FlashcardRepository flashcardRepository;
   final CounterBloc counterBloc;
 
-  FlashcardsBloc({@required this.flashcardRepository, @required this.counterBloc})
-      : assert(flashcardRepository != null), assert(counterBloc != null);
+  FlashcardsBloc(
+      {@required this.flashcardRepository, @required this.counterBloc})
+      : assert(flashcardRepository != null),
+        assert(counterBloc != null);
 
   @override
   FlashcardsState get initialState => FlashcardsNotLoaded();
@@ -22,26 +24,21 @@ class FlashcardsBloc extends Bloc<FlashcardsEvent, FlashcardsState> {
     FlashcardsEvent event,
   ) async* {
     if (event is LoadFlashcards) {
-      var flashcards = await flashcardRepository.getFlashcardsByDeckId(
-          deckId: event.deckId, page: event.page);
-
-print("1: "+  event.flashcards.length.toString());
-//      if(event.page == 0) {
-//        counterBloc.add(CounterEvent.reset);
-//      }
+      var flashcards = event.flashcards;
+      flashcards.addAll(await flashcardRepository.getFlashcardsByDeckId(
+          deckId: event.deckId, page: event.page));
 
       if (flashcards.isEmpty) {
         yield NoFlashcards();
       } else {
         yield FlashcardsLoaded(flashcards, event.page, event.index, true);
       }
-    } else     if (event is IncrementIndex) {
-      print("2: "+  event.flashcards.length.toString());
-
+    } else if (event is IncrementIndex) {
       if (event.flashcards.isEmpty) {
         yield NoFlashcards();
       } else {
-        yield FlashcardsLoaded(event.flashcards, event.page, event.index + 1, false);
+        yield FlashcardsLoaded(
+            event.flashcards, event.page, event.index + 1, false);
       }
     }
   }

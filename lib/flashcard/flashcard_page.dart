@@ -22,8 +22,6 @@ class CardScreen extends StatefulWidget {
 }
 
 class _CardScreenState extends State<CardScreen> {
-  Future<List<CardModel>> flashcards;
-//  List<CardModel> cards = [];
 
   loadNextPage(int index, int page, List<CardModel> cards) async {
     BlocProvider.of<FlashcardsBloc>(context)
@@ -99,7 +97,7 @@ class _CardScreenState extends State<CardScreen> {
     return BlocListener<FlashcardsBloc, FlashcardsState>(
       listener: (context, state) {
         if(state is FlashcardsLoaded) {
-          if (state.index >= state.flashcards.length - 3) {
+          if (state.index >= state.flashcards.length - 3 && !state.newCards) {
               loadNextPage(state.index, state.page + 1, state.flashcards);
           }
         }
@@ -147,13 +145,7 @@ class _CardScreenState extends State<CardScreen> {
     return Scaffold(
         body: BlocListener<FlashcardsBloc, FlashcardsState>(
       listener: (context, state) {
-        if (state is FlashcardsLoaded) {
-          if(state.newCards) {
-//            print(cards.length);
-//            cards.addAll(state.flashcards);
-//            print(cards.length);
-          }
-        }
+
       },
       child: BlocBuilder<FlashcardsBloc, FlashcardsState>(
         builder: (context, state) {
