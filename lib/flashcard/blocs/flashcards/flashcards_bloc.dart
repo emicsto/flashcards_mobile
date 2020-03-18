@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flashcards/flashcard/blocs/counter/bloc.dart';
 import 'package:flashcards/flashcard/flashcard_repository.dart';
 import 'package:flutter/widgets.dart';
 
@@ -9,12 +8,10 @@ import 'bloc.dart';
 
 class FlashcardsBloc extends Bloc<FlashcardsEvent, FlashcardsState> {
   final FlashcardRepository flashcardRepository;
-  final CounterBloc counterBloc;
 
   FlashcardsBloc(
-      {@required this.flashcardRepository, @required this.counterBloc})
-      : assert(flashcardRepository != null),
-        assert(counterBloc != null);
+      {@required this.flashcardRepository})
+      : assert(flashcardRepository != null);
 
   @override
   FlashcardsState get initialState => FlashcardsNotLoaded();
@@ -40,6 +37,8 @@ class FlashcardsBloc extends Bloc<FlashcardsEvent, FlashcardsState> {
         yield FlashcardsLoaded(
             event.flashcards, event.page, event.index + 1, false);
       }
+    } else if (event is ImportFlashcards) {
+      flashcardRepository.saveFlashcards(event.deckId, event.flashcardsCsv);
     }
   }
 }

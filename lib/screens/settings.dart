@@ -2,11 +2,10 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flashcards/authentication/bloc/bloc.dart';
-import 'package:flashcards/login/bloc/bloc.dart';
+import 'package:flashcards/deck/bloc/bloc.dart';
+import 'package:flashcards/flashcard/blocs/flashcards/bloc.dart';
 import 'package:flashcards/models/deck.dart';
 import 'package:flashcards/authentication/authentication_repository.dart';
-import 'package:flashcards/repositories/card_repository.dart';
-import 'package:flashcards/repositories/deck_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,8 +27,7 @@ class _SettingsState extends State<Settings> {
     super.initState();
   }
 
-  Future<List<Widget>> getDecksAsDialogOptions() async {
-    List<Deck> decks = await fetchDecks();
+  Future<List<Widget>> getDecksAsDialogOptions(List<Deck> decks) async {
     List<Widget> widgets = [];
 
     decks.forEach((deck) => {
@@ -39,18 +37,20 @@ class _SettingsState extends State<Settings> {
               style: TextStyle(fontSize: 16),
             ),
             onPressed: () =>
-                {importFlashcards(deck.id), navigatorKey.currentState.pop()},
+                {onImportFlashcardsPressed(deck.id), navigatorKey.currentState.pop()},
           ))
         });
 
     return widgets;
   }
 
-  Future<void> importFlashcards(String deckId) async {
+  Future<void> onImportFlashcardsPressed(String deckId) async {
     try {
       File file = await FilePicker.getFile();
       var flashcardsCsv = await file.readAsString();
-      await saveFlashcards(deckId, flashcardsCsv);
+      BlocProvider.of<FlashcardsBloc>(context).add(ImportFlashcards(deckId, flashcardsCsv));
+
+      BlocProvider.of<DeckBloc>(context).add(LoadDecks());
 
       Scaffold.of(context).showSnackBar(
           SnackBar(content: Text("Flashcards were successfully imported")));
@@ -60,8 +60,10 @@ class _SettingsState extends State<Settings> {
     }
   }
 
-  void showDecksDialog() async {
-    getDecksAsDialogOptions().then((decks) => {
+  void showDecksDialog(List<Deck> decks) async {
+    BlocProvider.of<DeckBloc>(context).add(LoadDecks());
+
+    getDecksAsDialogOptions(decks).then((deckWidgets) => {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -73,13 +75,14 @@ class _SettingsState extends State<Settings> {
                     style: TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.teal),
                   ),
-                  children: decks);
+                  children: deckWidgets);
             },
           )
         });
   }
 
   void showHelpDialog() async {
+
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -116,7 +119,7 @@ class _SettingsState extends State<Settings> {
           navigatorKey.currentState.pushReplacementNamed(LoginViewRoute, arguments: widget.authenticationRepository);
         }
       },
-      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      child: BlocBuilder<DeckBloc, DeckState>(
         builder: (context, state) {
           return ListView(children: <Widget>[
             ListTile(
@@ -137,21 +140,37 @@ class _SettingsState extends State<Settings> {
                 )),
             ListTile(
               title: Text('Import flashcards'),
-              onTap: () => showDecksDialog(),
+              onTap: () => state is DecksLoaded ? showDecksDialog(state.decks) : showNoDecksSnackBar(),
             ),
-            RaisedButton(
-                padding:
-                    EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 15),
-                child: Text(
-                  "Log out",
-                  style: TextStyle(fontSize: 20),
-                ),
-                onPressed: () {
-                  BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
-                })
+            LogoutButton()
           ]);
         },
       ),
     );
+  }
+
+  showNoDecksSnackBar() {
+    Scaffold.of(context).showSnackBar(
+        SnackBar(content: Text("You don't have any deck to which you could add imported flashcards")));
+  }
+}
+
+class LogoutButton extends StatelessWidget {
+  const LogoutButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+        padding:
+            EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 15),
+        child: Text(
+          "Log out",
+          style: TextStyle(fontSize: 20),
+        ),
+        onPressed: () {
+          BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
+        });
   }
 }

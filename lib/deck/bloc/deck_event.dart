@@ -16,8 +16,8 @@ class AddDeck extends DeckEvent {
 }
 
 class ShowDeckTapped extends DeckEvent {
-  final String id;
+  final String deckId;
 
-  const ShowDeckTapped(this.id);
+  const ShowDeckTapped(this.deckId);
 }
 
