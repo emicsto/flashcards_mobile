@@ -15,7 +15,7 @@ class DeckRepository {
     }
   }
 
-  Future<void> saveDeck(String name) async {
+  Future<void> addDeck(String name) async {
     var dio = await getHttpClient();
 
     final response = await dio.post('/decks', data: jsonEncode({"name": name}));

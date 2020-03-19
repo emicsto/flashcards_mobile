@@ -10,9 +10,9 @@ abstract class DeckEvent {
 class LoadDecks extends DeckEvent {}
 
 class AddDeck extends DeckEvent {
-  final Deck deck;
+  final String name;
 
-  const AddDeck(this.deck);
+  const AddDeck(this.name);
 }
 
 class ShowDeckTapped extends DeckEvent {

@@ -30,6 +30,9 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
       var firstPage = 0;
       flashcardsBloc.add(LoadFlashcards(new List(), event.deckId, firstPage, 0));
       navigatorKey.currentState.pushNamed(CardViewRoute, arguments: event.deckId);
+    } else if (event is AddDeck) {
+      await deckRepository.addDeck(event.name);
+      add(LoadDecks());
     }
   }
 }
