@@ -1,9 +1,9 @@
-import 'package:flashcards/deck/bloc/bloc.dart';
-import 'package:flashcards/flashcard/flashcard_page.dart';
+import 'package:flashcards/blocs/deck/bloc.dart';
+import 'package:flashcards/screens/flashcard_screen.dart';
 import 'package:flashcards/models/deck.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flashcards/login/login_page.dart';
+import 'package:flashcards/screens/login_screen.dart';
 import 'package:flashcards/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

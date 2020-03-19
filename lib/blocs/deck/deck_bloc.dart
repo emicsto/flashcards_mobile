@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flashcards/deck/deck_repository.dart';
-import 'package:flashcards/flashcard/blocs/flashcards/bloc.dart';
-import 'package:flashcards/login/login_page.dart';
+import 'package:flashcards/repositories/deck_repository.dart';
+import 'package:flashcards/screens/login_screen.dart';
 import 'package:flutter/widgets.dart';
 import '../../router.dart';
 import './bloc.dart';
+import '../flashcards/bloc.dart';
 
 class DeckBloc extends Bloc<DeckEvent, DeckState> {
   final DeckRepository deckRepository;

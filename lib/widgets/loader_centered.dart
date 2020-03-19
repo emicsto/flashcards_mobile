@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CircularProgressIndicatorCentered extends StatelessWidget {
-  const CircularProgressIndicatorCentered({
+class LoaderCentered extends StatelessWidget {
+  const LoaderCentered({
     Key key,
   }) : super(key: key);
 

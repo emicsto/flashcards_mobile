@@ -1,27 +1,28 @@
 import 'package:flashcards/models/card_model.dart';
-import 'package:flashcards/screens/empty_deck.dart';
+import 'package:flashcards/screens/empty_deck_screen.dart';
 import 'package:flashcards/utils/assessment.dart';
-import 'package:flashcards/widgets/flashcards/flashcard.dart';
-import 'package:flashcards/widgets/layouts/circular_progress_indicator_centered.dart';
+import 'package:flashcards/widgets/flashcard.dart';
+import 'package:flashcards/widgets/loader_centered.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flashcards/utils/extended_flip_card_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'blocs/flashcards/bloc.dart';
+import '../blocs/flashcards/bloc.dart';
+
 
 GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
-class CardScreen extends StatefulWidget {
+class FlashcardScreen extends StatefulWidget {
   final String deckId;
 
-  CardScreen({Key key, this.deckId}) : super(key: key);
+  FlashcardScreen({Key key, this.deckId}) : super(key: key);
 
   @override
-  _CardScreenState createState() => _CardScreenState();
+  _FlashcardScreenState createState() => _FlashcardScreenState();
 }
 
-class _CardScreenState extends State<CardScreen> {
+class _FlashcardScreenState extends State<FlashcardScreen> {
 
   loadNextPage(int index, int page, List<CardModel> cards) async {
     BlocProvider.of<FlashcardsBloc>(context)
@@ -87,7 +88,7 @@ class _CardScreenState extends State<CardScreen> {
                     ),
             );
           }
-          return CircularProgressIndicatorCentered();
+          return LoaderCentered();
         },
       ),
     );
@@ -111,7 +112,6 @@ class _CardScreenState extends State<CardScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Text(state.flashcards.length.toString()),
                   FlipCard(
                     speed: 350,
                     key: cardKey,
@@ -134,7 +134,7 @@ class _CardScreenState extends State<CardScreen> {
               ),
             );
           }
-          return CircularProgressIndicatorCentered();
+          return LoaderCentered();
         },
       ),
     );
@@ -150,11 +150,11 @@ class _CardScreenState extends State<CardScreen> {
       child: BlocBuilder<FlashcardsBloc, FlashcardsState>(
         builder: (context, state) {
           if (state is NoFlashcards) {
-            return EmptyDeck();
+            return EmptyDeckScreen();
           } else if (state is FlashcardsLoaded) {
             return buildScreen(context);
           } else {
-            return CircularProgressIndicatorCentered();
+            return LoaderCentered();
           }
         },
       ),

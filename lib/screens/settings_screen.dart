@@ -1,27 +1,27 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flashcards/authentication/bloc/bloc.dart';
-import 'package:flashcards/deck/bloc/bloc.dart';
-import 'package:flashcards/flashcard/blocs/flashcards/bloc.dart';
+import 'package:flashcards/blocs/authentication/bloc.dart';
+import 'package:flashcards/blocs/deck/bloc.dart';
+import 'package:flashcards/blocs/flashcards/bloc.dart';
 import 'package:flashcards/models/deck.dart';
-import 'package:flashcards/authentication/authentication_repository.dart';
+import 'package:flashcards/repositories/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../login/login_page.dart';
+import 'login_screen.dart';
 import '../router.dart';
 
-class Settings extends StatefulWidget {
+class SettingsScreen extends StatefulWidget {
   final AuthenticationRepository authenticationRepository;
 
-  Settings({Key key, @required this.authenticationRepository}) : super(key: key);
+  SettingsScreen({Key key, @required this.authenticationRepository}) : super(key: key);
 
   @override
-  _SettingsState createState() => _SettingsState();
+  _SettingsScreenState createState() => _SettingsScreenState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();

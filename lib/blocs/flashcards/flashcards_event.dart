@@ -1,5 +1,5 @@
 import 'package:flashcards/models/card_model.dart';
-import 'package:flashcards/widgets/flashcards/flashcard.dart';
+import 'package:flashcards/widgets/flashcard.dart';
 import 'package:meta/meta.dart';
 
 @immutable

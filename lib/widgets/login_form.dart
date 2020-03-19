@@ -1,10 +1,9 @@
+import 'package:flashcards/blocs/login/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-
-import 'bloc/bloc.dart';
 
 class LoginForm extends StatelessWidget {
   LoginForm({

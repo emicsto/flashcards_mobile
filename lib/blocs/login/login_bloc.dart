@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flashcards/authentication/authentication_repository.dart';
-import 'package:flashcards/authentication/bloc/authentication_bloc.dart';
-import 'package:flashcards/authentication/bloc/authentication_event.dart';
+import 'package:flashcards/repositories/authentication_repository.dart';
+import 'package:flashcards/blocs/authentication/authentication_bloc.dart';
+import 'package:flashcards/blocs/authentication/authentication_event.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'login_event.dart';

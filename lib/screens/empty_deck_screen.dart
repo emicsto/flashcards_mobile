@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class EmptyDeck extends StatelessWidget {
-  const EmptyDeck({
+class EmptyDeckScreen extends StatelessWidget {
+  const EmptyDeckScreen({
     Key key,
   }) : super(key: key);
 

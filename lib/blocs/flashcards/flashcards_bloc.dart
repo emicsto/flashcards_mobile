@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flashcards/flashcard/flashcard_repository.dart';
+import 'package:flashcards/repositories/flashcard_repository.dart';
 import 'package:flutter/widgets.dart';
 
 import 'bloc.dart';

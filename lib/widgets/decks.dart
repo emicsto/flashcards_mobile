@@ -1,8 +1,8 @@
-import 'package:flashcards/deck/bloc/bloc.dart';
+import 'package:flashcards/blocs/deck/bloc.dart';
 import 'package:flashcards/models/deck.dart';
-import 'package:flashcards/deck/deck_repository.dart';
-import 'package:flashcards/deck/deck_card.dart';
-import 'package:flashcards/widgets/layouts/circular_progress_indicator_centered.dart';
+import 'package:flashcards/repositories/deck_repository.dart';
+import 'package:flashcards/widgets/deck_card.dart';
+import 'package:flashcards/widgets/loader_centered.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,9 +61,9 @@ class DecksState extends State<Decks> {
               ),
             );
           } else if (state is DeckLoading) {
-            return CircularProgressIndicatorCentered();
+            return LoaderCentered();
           }
-          return CircularProgressIndicatorCentered();
+          return LoaderCentered();
         },
       )
     );

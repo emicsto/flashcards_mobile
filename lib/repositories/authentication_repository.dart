@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flashcards/login/login_page.dart';
+import 'package:flashcards/screens/login_screen.dart';
 import 'package:flashcards/models/token_pair.dart';
 import 'package:flashcards/models/user.dart';
 import 'package:flashcards/utils/http_dio.dart';
