@@ -12,7 +12,6 @@ import 'blocs/authentication/authentication_event.dart';
 import 'blocs/authentication/bloc.dart';
 import 'blocs/flashcards/bloc.dart';
 import 'blocs/deck/bloc.dart';
-import 'blocs/flashcard/bloc.dart';
 import 'repositories/flashcard_repository.dart';
 import 'screens/login_screen.dart';
 
@@ -27,9 +26,6 @@ Future<void> main() async {
 
   runApp(MultiBlocProvider(
     providers: [
-      BlocProvider<FlashcardBloc>(
-        create: (context) => FlashcardBloc(),
-      ),
       BlocProvider<FlashcardsBloc>(
         create: (context) => FlashcardsBloc(
           flashcardRepository: flashcardRepository,
