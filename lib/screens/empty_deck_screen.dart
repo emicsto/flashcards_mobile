@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class EmptyDeck extends StatelessWidget {
-  const EmptyDeck({
+class EmptyDeckScreen extends StatelessWidget {
+  const EmptyDeckScreen({
     Key key,
   }) : super(key: key);
 
@@ -11,15 +11,14 @@ class EmptyDeck extends StatelessWidget {
     var emptyDeckHeader = Text(
       "Empty Deck",
       style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 1.4),
+          fontSize: 24, fontWeight: FontWeight.w600, letterSpacing: 1.4),
     );
 
     var emptyDeckText = Text(
       "Looks like you don't have any cards to review",
       textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 15,  letterSpacing: 1.4, fontWeight: FontWeight.w300),
+      style: TextStyle(
+          fontSize: 15, letterSpacing: 1.4, fontWeight: FontWeight.w300),
     );
 
     var emptyDeckImage = SizedBox.fromSize(

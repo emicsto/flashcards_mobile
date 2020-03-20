@@ -1,6 +1,6 @@
-import 'package:flashcards/screens/card_screen.dart';
-import 'package:flashcards/screens/home.dart';
-import 'package:flashcards/screens/login.dart';
+import 'package:flashcards/screens/flashcard_screen.dart';
+import 'package:flashcards/screens/home_screen.dart';
+import 'package:flashcards/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 const String HomeViewRoute = '/';
@@ -11,12 +11,14 @@ const String EmptyDeckViewRoute = 'empty-deck';
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case HomeViewRoute:
-      return MaterialPageRoute(builder: (context) => HomePage(title: "Home"));
+      return MaterialPageRoute(builder: (context) => HomeScreen(title: "Home"));
     case CardViewRoute:
-      return MaterialPageRoute(builder: (context) => CardScreen(deckId: settings.arguments));
+      return MaterialPageRoute(builder: (context) => FlashcardScreen(deckId: settings.arguments));
     case EmptyDeckViewRoute:
-      return MaterialPageRoute(builder: (context) => CardScreen());
+      return MaterialPageRoute(builder: (context) => FlashcardScreen());
+    case LoginViewRoute:
+      return MaterialPageRoute(builder: (context) => LoginScreen(authenticationRepository:  settings.arguments,));
     default:
-      return MaterialPageRoute(builder: (context) => Login(title: "Login"));
+      return MaterialPageRoute(builder: (context) => HomeScreen(title: "Home"));
   }
 }
