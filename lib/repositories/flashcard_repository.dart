@@ -3,16 +3,18 @@ import 'dart:convert';
 import 'package:flashcards/models/card_model.dart';
 import 'package:flashcards/utils/http_dio.dart';
 
-
 class FlashcardRepository {
-  Future<List<CardModel>> getFlashcardsByDeckId({String deckId, int page = 0}) async {
+  Future<List<CardModel>> getFlashcardsByDeckId(
+      {String deckId, int page = 0}) async {
     var dio = await getHttpClient();
     final response = await dio.get('/decks/$deckId/flashcards',
         queryParameters: {"page": page, "size": 3});
 
     if (response.statusCode == 200) {
-      return response.data.map((card) => CardModel.fromJson(card)).cast<
-          CardModel>().toList();
+      return response.data
+          .map((card) => CardModel.fromJson(card))
+          .cast<CardModel>()
+          .toList();
     } else {
       throw Exception('Failed to load flashcards');
     }

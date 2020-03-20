@@ -15,7 +15,6 @@ class Decks extends StatefulWidget {
       : assert(deckRepository != null),
         super(key: key);
 
-
   @override
   DecksState createState() {
     return new DecksState();
@@ -37,35 +36,33 @@ class DecksState extends State<Decks> {
     );
 
     return BlocListener<DeckBloc, DeckState>(
-    listener: (context, state) {
+        listener: (context, state) {},
+        child: BlocBuilder<DeckBloc, DeckState>(
+          builder: (context, state) {
+            if (state is DeckInitial) {
+              BlocProvider.of<DeckBloc>(context).add(LoadDecks());
+            }
 
-    },
-      child: BlocBuilder<DeckBloc, DeckState>(
-        builder: (context, state) {
-          if (state is DeckInitial) {
-            BlocProvider.of<DeckBloc>(context).add(LoadDecks());
-          }
+            if (state is DecksLoaded) {
+              var decks = state.decks;
 
-          if (state is DecksLoaded) {
-            var decks = state.decks;
-
-            return ListView.builder(
-              padding: EdgeInsets.only(top: 20, bottom: 25, left: 15, right: 15),
-              itemCount: decks.length,
-              itemBuilder: (context, i) => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  i == 0 ? header : Container(),
-                  DeckCard(index: i, decks: decks)
-                ],
-              ),
-            );
-          } else if (state is DeckLoading) {
+              return ListView.builder(
+                padding:
+                    EdgeInsets.only(top: 20, bottom: 25, left: 15, right: 15),
+                itemCount: decks.length,
+                itemBuilder: (context, i) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    i == 0 ? header : Container(),
+                    DeckCard(index: i, decks: decks)
+                  ],
+                ),
+              );
+            } else if (state is DeckLoading) {
+              return LoaderCentered();
+            }
             return LoaderCentered();
-          }
-          return LoaderCentered();
-        },
-      )
-    );
+          },
+        ));
   }
 }

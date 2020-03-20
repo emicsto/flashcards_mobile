@@ -1,7 +1,6 @@
 import 'package:flashcards/repositories/authentication_repository.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
-import 'package:flashcards/screens/home_screen.dart';
-import 'package:flashcards/widgets/loader_centered.dart';
+import 'package:flashcards/widgets/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -77,25 +76,9 @@ class App extends StatelessWidget {
           )),
       onGenerateRoute: router.generateRoute,
       navigatorKey: navigatorKey,
-      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-        builder: (context, state) {
-          if (state is AuthenticationAuthenticated) {
-            return HomeScreen(
-              authenticationRepository: authenticationRepository,
-              deckRepository: deckRepository,
-            );
-          }
-          if (state is AuthenticationUnauthenticated) {
-            return LoginScreen(
-              authenticationRepository: authenticationRepository,
-            );
-          }
-          if (state is AuthenticationLoading) {
-            return LoaderCentered();
-          }
-          return LoaderCentered();
-        },
-      ),
+      home: Home(
+          authenticationRepository: authenticationRepository,
+          deckRepository: deckRepository),
     );
   }
 }

@@ -15,7 +15,8 @@ import '../router.dart';
 class SettingsScreen extends StatefulWidget {
   final AuthenticationRepository authenticationRepository;
 
-  SettingsScreen({Key key, @required this.authenticationRepository}) : super(key: key);
+  SettingsScreen({Key key, @required this.authenticationRepository})
+      : super(key: key);
 
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
@@ -36,8 +37,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               deck.name,
               style: TextStyle(fontSize: 16),
             ),
-            onPressed: () =>
-                {onImportFlashcardsPressed(deck.id), navigatorKey.currentState.pop()},
+            onPressed: () => {
+              onImportFlashcardsPressed(deck.id),
+              navigatorKey.currentState.pop()
+            },
           ))
         });
 
@@ -48,7 +51,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     try {
       File file = await FilePicker.getFile();
       var flashcardsCsv = await file.readAsString();
-      BlocProvider.of<FlashcardsBloc>(context).add(ImportFlashcards(deckId, flashcardsCsv));
+      BlocProvider.of<FlashcardsBloc>(context)
+          .add(ImportFlashcards(deckId, flashcardsCsv));
 
       BlocProvider.of<DeckBloc>(context).add(LoadDecks());
 
@@ -82,7 +86,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void showHelpDialog() async {
-
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -116,7 +119,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
         if (state is AuthenticationUnauthenticated) {
-          navigatorKey.currentState.pushReplacementNamed(LoginViewRoute, arguments: widget.authenticationRepository);
+          navigatorKey.currentState.pushReplacementNamed(LoginViewRoute,
+              arguments: widget.authenticationRepository);
         }
       },
       child: BlocBuilder<DeckBloc, DeckState>(
@@ -140,7 +144,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 )),
             ListTile(
               title: Text('Import flashcards'),
-              onTap: () => state is DecksLoaded ? showDecksDialog(state.decks) : showNoDecksSnackBar(),
+              onTap: () => state is DecksLoaded
+                  ? showDecksDialog(state.decks)
+                  : showNoDecksSnackBar(),
             ),
             LogoutButton()
           ]);
@@ -150,8 +156,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   showNoDecksSnackBar() {
-    Scaffold.of(context).showSnackBar(
-        SnackBar(content: Text("You don't have any deck to which you could add imported flashcards")));
+    Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(
+            "You don't have any deck to which you could add imported flashcards")));
   }
 }
 
@@ -163,8 +170,7 @@ class LogoutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-        padding:
-            EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 15),
+        padding: EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 15),
         child: Text(
           "Log out",
           style: TextStyle(fontSize: 20),

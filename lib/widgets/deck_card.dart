@@ -1,10 +1,7 @@
 import 'package:flashcards/blocs/deck/bloc.dart';
-import 'package:flashcards/screens/flashcard_screen.dart';
 import 'package:flashcards/models/deck.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flashcards/screens/login_screen.dart';
-import 'package:flashcards/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeckCard extends StatelessWidget {
@@ -27,9 +24,7 @@ class DeckCard extends StatelessWidget {
 
     var deck = decks[index];
     return BlocListener<DeckBloc, DeckState>(
-        listener: (context, state) {
-
-        },
+        listener: (context, state) {},
         child: GestureDetector(
             onTap: () => _onDeckTapped(deck.id),
             child: Container(

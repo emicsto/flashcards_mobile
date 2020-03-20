@@ -10,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/flashcards/bloc.dart';
 
-
 GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
 class FlashcardScreen extends StatefulWidget {
@@ -23,7 +22,6 @@ class FlashcardScreen extends StatefulWidget {
 }
 
 class _FlashcardScreenState extends State<FlashcardScreen> {
-
   loadNextPage(int index, int page, List<CardModel> cards) async {
     BlocProvider.of<FlashcardsBloc>(context)
         .add(LoadFlashcards(cards, widget.deckId, page, index));
@@ -40,7 +38,8 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   }
 
   //TODO implement correctly
-  assignAssessment(Assessment assessment, int index, int page, List<CardModel> list) {
+  assignAssessment(
+      Assessment assessment, int index, int page, List<CardModel> list) {
     nextCard(index, page, list);
   }
 
@@ -58,34 +57,31 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
         builder: (context, state) {
           if (state is FlashcardsLoaded) {
             return Expanded(
-//      TODO: fix
-              child: false
-                  ? Container()
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        RaisedButton(
-                          onPressed: () => assignAssessment(
-                              Assessment.again, state.index, state.page, state.flashcards),
-                          child: Text("Again"),
-                        ),
-                        RaisedButton(
-                          onPressed: () => assignAssessment(
-                              Assessment.hard, state.index, state.page, state.flashcards),
-                          child: Text("Hard"),
-                        ),
-                        RaisedButton(
-                          onPressed: () => assignAssessment(
-                              Assessment.easy, state.index, state.page, state.flashcards),
-                          child: Text("Easy"),
-                        ),
-                        RaisedButton(
-                          onPressed: () => assignAssessment(
-                              Assessment.good, state.index, state.page, state.flashcards),
-                          child: Text("Good"),
-                        ),
-                      ],
-                    ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  RaisedButton(
+                    onPressed: () => assignAssessment(Assessment.again,
+                        state.index, state.page, state.flashcards),
+                    child: Text("Again"),
+                  ),
+                  RaisedButton(
+                    onPressed: () => assignAssessment(Assessment.hard,
+                        state.index, state.page, state.flashcards),
+                    child: Text("Hard"),
+                  ),
+                  RaisedButton(
+                    onPressed: () => assignAssessment(Assessment.easy,
+                        state.index, state.page, state.flashcards),
+                    child: Text("Easy"),
+                  ),
+                  RaisedButton(
+                    onPressed: () => assignAssessment(Assessment.good,
+                        state.index, state.page, state.flashcards),
+                    child: Text("Good"),
+                  ),
+                ],
+              )
             );
           }
           return LoaderCentered();
@@ -97,9 +93,9 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   Widget buildCard(BuildContext context) {
     return BlocListener<FlashcardsBloc, FlashcardsState>(
       listener: (context, state) {
-        if(state is FlashcardsLoaded) {
+        if (state is FlashcardsLoaded) {
           if (state.index >= state.flashcards.length - 3 && !state.newCards) {
-              loadNextPage(state.index, state.page + 1, state.flashcards);
+            loadNextPage(state.index, state.page + 1, state.flashcards);
           }
         }
       },
@@ -118,14 +114,18 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                     direction: FlipDirection.HORIZONTAL,
                     front: Flashcard(
                       text: Text(
-                        state.flashcards.isNotEmpty ? state.flashcards[state.index].front : "",
+                        state.flashcards.isNotEmpty
+                            ? state.flashcards[state.index].front
+                            : "",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 25),
                       ),
                     ),
                     back: Flashcard(
                       text: Text(
-                        state.flashcards.isNotEmpty ? state.flashcards[state.index].back : "",
+                        state.flashcards.isNotEmpty
+                            ? state.flashcards[state.index].back
+                            : "",
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
@@ -144,9 +144,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: BlocListener<FlashcardsBloc, FlashcardsState>(
-      listener: (context, state) {
-
-      },
+      listener: (context, state) {},
       child: BlocBuilder<FlashcardsBloc, FlashcardsState>(
         builder: (context, state) {
           if (state is NoFlashcards) {

@@ -9,9 +9,9 @@ class LoaderCentered extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[CircularProgressIndicator()],
-        ));
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[CircularProgressIndicator()],
+    ));
   }
 }

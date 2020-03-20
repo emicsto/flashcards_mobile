@@ -26,7 +26,6 @@ class LoginForm extends StatelessWidget {
     size: Size(280.0, 280.0),
   );
 
-
   @override
   Widget build(BuildContext context) {
     _onLoginButtonPressed() {
@@ -47,9 +46,9 @@ class LoginForm extends StatelessWidget {
                   child: state is LoginLoading
                       ? Center(child: CircularProgressIndicator())
                       : GoogleSignInButton(
-                      onPressed: state is! LoginLoading
-                          ? _onLoginButtonPressed
-                          : null),
+                          onPressed: state is! LoginLoading
+                              ? _onLoginButtonPressed
+                              : null),
                 ),
               ]),
         );

@@ -17,4 +17,3 @@ class DecksLoaded extends DeckState {
 }
 
 class DeckNotLoaded extends DeckState {}
-

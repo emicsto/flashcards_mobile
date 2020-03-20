@@ -17,7 +17,11 @@ class FlashcardsLoaded extends FlashcardsState {
   final int index;
   final bool newCards;
 
-  const FlashcardsLoaded([this.flashcards = const [], this.page = 0, this.index = 0, this.newCards]);
+  const FlashcardsLoaded(
+      [this.flashcards = const [],
+      this.page = 0,
+      this.index = 0,
+      this.newCards]);
 }
 
 class NoFlashcards extends FlashcardsState {}

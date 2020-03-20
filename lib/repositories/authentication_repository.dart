@@ -48,27 +48,23 @@ class AuthenticationRepository {
   }
 
   Future<void> deleteRefreshToken() async {
-    var _dio = await getHttpClient();
+    var dio = await getHttpClient();
     var refreshToken = await storage.read(key: "refreshToken");
-
-    final response = _dio.post("/auth/logout", data: json.encode({"refresh_token": refreshToken}));
+    dio.post("/auth/logout",
+        data: json.encode({"refresh_token": refreshToken}));
   }
 
   Future<void> loginWithGoogle() async {
-//    try {
-      var result = await googleSignIn.signIn();
-      var googleKey = await result?.authentication;
-      await sendIdToken(googleKey?.idToken);
-      navigatorKey.currentState.pushReplacementNamed(HomeViewRoute);
-//    } on Exception {
-//      TODO Add handler
-//    }
+    var result = await googleSignIn.signIn();
+    var googleKey = await result?.authentication;
+    await sendIdToken(googleKey?.idToken);
+    navigatorKey.currentState.pushReplacementNamed(HomeViewRoute);
   }
 
   Future<void> signInSilently() async {
-      var result = await googleSignIn.signInSilently();
-      var googleKey = await result?.authentication;
-      await sendIdToken(googleKey?.idToken);
+    var result = await googleSignIn.signInSilently();
+    var googleKey = await result?.authentication;
+    await sendIdToken(googleKey?.idToken);
   }
 
   Future<void> signOut() async {
@@ -79,8 +75,6 @@ class AuthenticationRepository {
   }
 
   Future<bool> hasToken() async {
-    return await storage.read(key: "accessToken") == null
-        ? false
-        : true;
+    return await storage.read(key: "accessToken") == null ? false : true;
   }
 }

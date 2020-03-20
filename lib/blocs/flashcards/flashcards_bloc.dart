@@ -9,8 +9,7 @@ import 'bloc.dart';
 class FlashcardsBloc extends Bloc<FlashcardsEvent, FlashcardsState> {
   final FlashcardRepository flashcardRepository;
 
-  FlashcardsBloc(
-      {@required this.flashcardRepository})
+  FlashcardsBloc({@required this.flashcardRepository})
       : assert(flashcardRepository != null);
 
   @override

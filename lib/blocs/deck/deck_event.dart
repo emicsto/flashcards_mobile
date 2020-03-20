@@ -1,7 +1,6 @@
 import 'package:flashcards/models/deck.dart';
 import 'package:meta/meta.dart';
 
-
 @immutable
 abstract class DeckEvent {
   const DeckEvent();
@@ -20,4 +19,3 @@ class ShowDeckTapped extends DeckEvent {
 
   const ShowDeckTapped(this.deckId);
 }
-

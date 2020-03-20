@@ -10,7 +10,12 @@ class HomeScreen extends StatefulWidget {
   final DeckRepository deckRepository;
   final String title;
 
-  HomeScreen({Key key, this.title, @required this.authenticationRepository, @required this.deckRepository}) : super(key: key);
+  HomeScreen(
+      {Key key,
+      this.title,
+      @required this.authenticationRepository,
+      @required this.deckRepository})
+      : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -38,7 +43,12 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Text("Flashcards"),
         ),
       ),
-      body: <Widget>[Decks(deckRepository:  widget.deckRepository), SettingsScreen(authenticationRepository:  widget.authenticationRepository,)].elementAt(_selectedIndex),
+      body: <Widget>[
+        Decks(deckRepository: widget.deckRepository),
+        SettingsScreen(
+          authenticationRepository: widget.authenticationRepository,
+        )
+      ].elementAt(_selectedIndex),
       floatingActionButton: _selectedIndex == 0
           ? FloatingActionButton(
               onPressed: () {

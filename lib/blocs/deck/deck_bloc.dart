@@ -12,7 +12,8 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
   final FlashcardsBloc flashcardsBloc;
 
   DeckBloc({@required this.deckRepository, @required this.flashcardsBloc})
-      : assert(deckRepository != null), assert(flashcardsBloc != null);
+      : assert(deckRepository != null),
+        assert(flashcardsBloc != null);
 
   @override
   DeckState get initialState => DeckInitial();
@@ -28,8 +29,10 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
       yield DecksLoaded(decks);
     } else if (event is ShowDeckTapped) {
       var firstPage = 0;
-      flashcardsBloc.add(LoadFlashcards(new List(), event.deckId, firstPage, 0));
-      navigatorKey.currentState.pushNamed(CardViewRoute, arguments: event.deckId);
+      flashcardsBloc
+          .add(LoadFlashcards(new List(), event.deckId, firstPage, 0));
+      navigatorKey.currentState
+          .pushNamed(CardViewRoute, arguments: event.deckId);
     } else if (event is AddDeck) {
       await deckRepository.addDeck(event.name);
       add(LoadDecks());

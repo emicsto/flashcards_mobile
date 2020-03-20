@@ -1,4 +1,3 @@
-
 import 'package:flashcards/blocs/deck/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -18,7 +17,6 @@ class AddDeckFormState extends State<AddDeckForm> {
   void _handleSaveDeck(BuildContext context) {
     if (_formKey.currentState.validate()) {
       BlocProvider.of<DeckBloc>(context).add(AddDeck(deckController.text));
-
       Navigator.of(context).pop();
     }
   }
