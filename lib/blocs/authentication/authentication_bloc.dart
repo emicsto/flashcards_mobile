@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flashcards/repositories/authentication_repository.dart';
+import 'package:flashcards/router.dart';
+import 'package:flashcards/screens/login_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'bloc.dart';
@@ -22,9 +24,15 @@ class AuthenticationBloc
   ) async* {
     if (event is AppStarted) {
       await storage.deleteAll();
-      await authenticationRepository.signInSilently();
+      try {
+        await authenticationRepository.signInSilently();
+      } on Exception {
+        navigatorKey.currentState.pushReplacementNamed(LoginViewRoute,
+            arguments: authenticationRepository);
+      }
 
       final bool hasToken = await authenticationRepository.hasToken();
+
       if (hasToken) {
         yield AuthenticationAuthenticated();
       } else {
