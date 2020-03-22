@@ -37,7 +37,10 @@ class FlashcardsBloc extends Bloc<FlashcardsEvent, FlashcardsState> {
             event.flashcards, event.page, event.index + 1, false);
       }
     } else if (event is ImportFlashcards) {
-      flashcardRepository.saveFlashcards(event.deckId, event.flashcardsCsv);
+      await flashcardRepository.saveFlashcards(event.deckId, event.flashcardsCsv);
+      yield FlashcardsImported();
     }
   }
 }
+
+

@@ -24,6 +24,7 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
   ) async* {
     if (event is LoadDecks) {
       yield DeckLoading();
+
       var decks = await deckRepository.fetchDecks();
 
       yield DecksLoaded(decks);

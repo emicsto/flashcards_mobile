@@ -27,3 +27,4 @@ class FlashcardsLoaded extends FlashcardsState {
 class NoFlashcards extends FlashcardsState {}
 
 class FlashcardsNotLoaded extends FlashcardsState {}
+class FlashcardsImported extends FlashcardsState {}

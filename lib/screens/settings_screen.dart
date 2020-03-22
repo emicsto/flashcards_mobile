@@ -54,8 +54,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       BlocProvider.of<FlashcardsBloc>(context)
           .add(ImportFlashcards(deckId, flashcardsCsv));
 
-      BlocProvider.of<DeckBloc>(context).add(LoadDecks());
-
       Scaffold.of(context).showSnackBar(
           SnackBar(content: Text("Flashcards were successfully imported")));
     } on Exception {
@@ -116,11 +114,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationBloc, AuthenticationState>(
+    return BlocListener<FlashcardsBloc, FlashcardsState>(
       listener: (context, state) {
-        if (state is AuthenticationUnauthenticated) {
-          navigatorKey.currentState.pushReplacementNamed(LoginViewRoute,
-              arguments: widget.authenticationRepository);
+        if (state is FlashcardsImported) {
+           BlocProvider.of<DeckBloc>(context).add(LoadDecks());
         }
       },
       child: BlocBuilder<DeckBloc, DeckState>(
