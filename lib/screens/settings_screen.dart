@@ -54,11 +54,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       BlocProvider.of<FlashcardsBloc>(context)
           .add(ImportFlashcards(deckId, flashcardsCsv));
 
-      Scaffold.of(context).showSnackBar(
-          SnackBar(content: Text("Flashcards were successfully imported")));
+      Scaffold.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 2),
+          content: Text("Flashcards were successfully imported")));
     } on Exception {
-      Scaffold.of(context).showSnackBar(
-          SnackBar(content: Text("An error occurred while reading the file")));
+      Scaffold.of(context).showSnackBar(SnackBar(
+          duration: Duration(seconds: 2),
+          content: Text("An error occurred while reading the file")));
     }
   }
 
@@ -117,11 +119,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return BlocListener<FlashcardsBloc, FlashcardsState>(
       listener: (context, state) {
         if (state is FlashcardsImported) {
-           BlocProvider.of<DeckBloc>(context).add(LoadDecks());
+          BlocProvider.of<DeckBloc>(context).add(LoadDecks());
         }
       },
       child: BlocBuilder<DeckBloc, DeckState>(
         builder: (context, state) {
+          print(state);
           return ListView(children: <Widget>[
             ListTile(
                 trailing: IconButton(
@@ -140,11 +143,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       fontSize: 14),
                 )),
             ListTile(
-              title: Text('Import flashcards'),
-              onTap: () => state is DecksLoaded
-                  ? showDecksDialog(state.decks)
-                  : showNoDecksSnackBar(),
-            ),
+                title: Text('Import flashcards'),
+                onTap: () {
+                  if (state is DecksLoaded) {
+                    if (state.decks.isEmpty) {
+                      return showNoDecksSnackBar();
+                    } else {
+                      return showDecksDialog(state.decks);
+                    }
+                  }
+                }),
             LogoutButton()
           ]);
         },
@@ -154,6 +162,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   showNoDecksSnackBar() {
     Scaffold.of(context).showSnackBar(SnackBar(
+        duration: Duration(milliseconds: 2500),
         content: Text(
             "You don't have any deck to which you could add imported flashcards")));
   }
