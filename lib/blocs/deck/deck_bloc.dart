@@ -26,7 +26,6 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
       yield DeckLoading();
 
       var decks = await deckRepository.fetchDecks();
-
       yield DecksLoaded(decks);
     } else if (event is ShowDeckTapped) {
       var firstPage = 0;

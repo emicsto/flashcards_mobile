@@ -39,6 +39,7 @@ Future<void> main() async {
       BlocProvider<AuthenticationBloc>(
         create: (context) => AuthenticationBloc(
           authenticationRepository: authenticationRepository,
+          deckBloc: BlocProvider.of<DeckBloc>(context),
         )..add(AppStarted()),
       ),
     ],

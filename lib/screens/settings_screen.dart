@@ -124,7 +124,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       },
       child: BlocBuilder<DeckBloc, DeckState>(
         builder: (context, state) {
-          print(state);
           return ListView(children: <Widget>[
             ListTile(
                 trailing: IconButton(

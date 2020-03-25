@@ -40,7 +40,6 @@ class DecksState extends State<Decks> {
         child: BlocBuilder<DeckBloc, DeckState>(
           builder: (context, state) {
             if (state is DeckInitial) {
-              BlocProvider.of<DeckBloc>(context).add(LoadDecks());
             }
 
             if (state is DecksLoaded) {
