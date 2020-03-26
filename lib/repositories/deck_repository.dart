@@ -24,4 +24,14 @@ class DeckRepository {
       throw Exception('Failed to add deck');
     }
   }
+
+  Future<void> delete(String id) async {
+    var dio = await getHttpClient();
+
+    final response = await dio.delete('/decks/$id');
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete deck');
+    }
+  }
 }

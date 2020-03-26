@@ -22,20 +22,55 @@ class DeckCard extends StatelessWidget {
       );
     }
 
+    showDeckDeletedSnackBar() {
+      Scaffold.of(context).showSnackBar(SnackBar(
+          duration: Duration(milliseconds: 2500),
+          content: Text("Deck successfully deleted"),
+          action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {
+              // Some code to undo the change.
+            })));
+    }
+
+    void onDeckLongPress(context, String id) {
+      showModalBottomSheet(
+          context: context,
+          builder: (_) => ListTile(
+              leading: Icon(
+                Icons.delete,
+                size: 20,
+              ),
+              title: Text('Delete deck'),
+              onTap: () {
+                BlocProvider.of<DeckBloc>(context).add(
+                  DeleteDeck(id),
+                );
+                Navigator.of(context).pop();
+                showDeckDeletedSnackBar();
+              }));
+    }
+
     var deck = decks[index];
     return BlocListener<DeckBloc, DeckState>(
-        listener: (context, state) {},
-        child: GestureDetector(
-            onTap: () => _onDeckTapped(deck.id),
-            child: Container(
-                height: 125,
-                padding: const EdgeInsets.only(bottom: 5),
-                child: Card(
-                  elevation: 2,
+        listener: (context, state) {
+          if(state is DeckDeleted) {
+          }
+        },
+        child: Container(
+            height: 125,
+            padding: const EdgeInsets.only(bottom: 5),
+
+              child: Card(
+                elevation: 2,
+                child:           InkWell(
+                  onTap: () => _onDeckTapped(deck.id),
+                  onLongPress: () => onDeckLongPress(context, deck.id),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
+
                       ListTile(
                         title: Row(
                           children: <Widget>[
@@ -50,12 +85,14 @@ class DeckCard extends StatelessWidget {
                           child: Text(
                             deck.quantity.toString() + " terms",
                             style:
-                                TextStyle(color: Colors.grey, fontSize: 13.0),
+                            TextStyle(color: Colors.grey, fontSize: 13.0),
                           ),
                         ),
                       )
                     ],
                   ),
-                ))));
+                ),
+              ),
+            ));
   }
 }
