@@ -132,17 +132,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       size: 20,
                     ),
                     onPressed: () => showHelpDialog()),
-                contentPadding:
-                    EdgeInsets.only(left: 16, right: 16, bottom: 0, top: 0),
                 title: Text(
                   'Data',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.teal,
-                      fontSize: 14),
+                      fontSize: 15),
                 )),
             ListTile(
-                title: Text('Import flashcards'),
+                title: Text('Import flashcards',                  style: TextStyle(
+                    fontSize: 16)),
                 onTap: () {
                   if (state is DecksLoaded) {
                     if (state.decks.isEmpty) {
@@ -152,7 +151,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     }
                   }
                 }),
-            LogoutButton()
+            Divider(),
+            ListTile(
+                title: Text(
+                  'General',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                      color: Colors.teal,
+                      fontSize: 15),
+                )),
+            ListTile(
+                title: Text('Sign out',                  style: TextStyle(
+                    fontSize: 16)),
+                onTap: () {
+                  BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
+                }),
           ]);
         },
       ),
@@ -164,24 +177,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
         duration: Duration(milliseconds: 2500),
         content: Text(
             "You don't have any deck to which you could add imported flashcards")));
-  }
-}
-
-class LogoutButton extends StatelessWidget {
-  const LogoutButton({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return RaisedButton(
-        padding: EdgeInsets.only(left: 40, right: 40, top: 15, bottom: 15),
-        child: Text(
-          "Log out",
-          style: TextStyle(fontSize: 20),
-        ),
-        onPressed: () {
-          BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
-        });
   }
 }
