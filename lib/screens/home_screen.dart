@@ -58,6 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           : Container(),
       bottomNavigationBar: BottomNavigationBar(
+        selectedFontSize: 14,
+        unselectedFontSize: 14,
         backgroundColor: Colors.black26,
         elevation: 0,
         selectedItemColor: Colors.teal,

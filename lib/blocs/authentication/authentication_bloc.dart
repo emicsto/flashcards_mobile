@@ -35,6 +35,7 @@ class AuthenticationBloc
       final bool hasToken = await authenticationRepository.hasToken();
 
       if (hasToken) {
+        deckBloc.add(LoadDecks());
         yield AuthenticationAuthenticated();
       } else {
         yield AuthenticationUnauthenticated();
