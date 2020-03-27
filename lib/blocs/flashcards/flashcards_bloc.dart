@@ -20,6 +20,10 @@ class FlashcardsBloc extends Bloc<FlashcardsEvent, FlashcardsState> {
     FlashcardsEvent event,
   ) async* {
     if (event is LoadFlashcards) {
+      if(event.flashcards.length == 0) {
+        yield FlashcardsNotLoaded();
+      }
+
       var flashcards = event.flashcards;
       flashcards.addAll(await flashcardRepository.getFlashcardsByDeckId(
           deckId: event.deckId, page: event.page));
