@@ -25,15 +25,17 @@ class IncrementIndex extends FlashcardsEvent {
   const IncrementIndex(this.flashcards, this.deckId, this.page, this.index);
 }
 
-class AddFlashcard extends FlashcardsEvent {
-  final Flashcard flashcard;
-
-  const AddFlashcard(this.flashcard);
-}
-
 class ImportFlashcards extends FlashcardsEvent {
   final String deckId;
   final String flashcardsCsv;
 
   const ImportFlashcards(this.deckId, this.flashcardsCsv);
+}
+
+class AddFlashcard extends FlashcardsEvent {
+  final String deckId;
+  final String front;
+  final String back;
+
+  const AddFlashcard(this.deckId, this.front, this.back);
 }

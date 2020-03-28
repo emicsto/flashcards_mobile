@@ -6,6 +6,8 @@ import 'package:flashcards/widgets/decks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
+import '../router.dart';
+
 class HomeScreen extends StatefulWidget {
   final AuthenticationRepository authenticationRepository;
   final DeckRepository deckRepository;
@@ -35,6 +37,10 @@ class _HomeScreenState extends State<HomeScreen> {
     showModalBottomSheet(context: context, builder: (_) => AddDeckForm());
   }
 
+  void addFlashcard(context) {
+    Navigator.pushNamed(context, AddFlashcardViewRoute);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,31 +58,31 @@ class _HomeScreenState extends State<HomeScreen> {
       ].elementAt(_selectedIndex),
       floatingActionButton: _selectedIndex == 0
           ? SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
-        animatedIconTheme: IconThemeData(size: 22.0),
-        animationSpeed: 100,
-        closeManually: false,
-        curve: Curves.easeInOutExpo,
-        overlayColor: Colors.black,
-        overlayOpacity: 0.5,
-        shape: CircleBorder(),
-        children: [
-          SpeedDialChild(
-            child: Icon(Icons.add),
-            backgroundColor: Color(0xFF005082),
-            label: "Add deck",
-            labelStyle: TextStyle(color: Colors.black),
-            onTap: () => addDeckModal(context),
-          ),
-          SpeedDialChild(
-              child: Icon(Icons.library_add),
-              backgroundColor: Color(0xFF005082),
-              label: "Add flashcard",
-              labelStyle: TextStyle(color: Colors.black),
-              onTap: () => addDeckModal(context),
-          ),
-        ],
-      )
+              animatedIcon: AnimatedIcons.menu_close,
+              animatedIconTheme: IconThemeData(size: 22.0),
+              animationSpeed: 50,
+              closeManually: false,
+              curve: Curves.easeInOutExpo,
+              overlayColor: Colors.black,
+              overlayOpacity: 0.3,
+              shape: CircleBorder(),
+              children: [
+                SpeedDialChild(
+                  child: Icon(Icons.add),
+                  backgroundColor: Color(0xFF005082),
+                  label: "Add deck",
+                  labelStyle: TextStyle(color: Colors.black),
+                  onTap: () => addDeckModal(context),
+                ),
+                SpeedDialChild(
+                  child: Icon(Icons.library_add),
+                  backgroundColor: Color(0xFF005082),
+                  label: "Add flashcard",
+                  labelStyle: TextStyle(color: Colors.black),
+                  onTap: () => addFlashcard(context),
+                ),
+              ],
+            )
           : Container(),
       bottomNavigationBar: BottomNavigationBar(
         selectedFontSize: 14,
