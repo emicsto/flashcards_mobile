@@ -4,6 +4,7 @@ import 'package:flashcards/screens/settings_screen.dart';
 import 'package:flashcards/widgets/add_deck_form.dart';
 import 'package:flashcards/widgets/decks.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class HomeScreen extends StatefulWidget {
   final AuthenticationRepository authenticationRepository;
@@ -50,12 +51,32 @@ class _HomeScreenState extends State<HomeScreen> {
         )
       ].elementAt(_selectedIndex),
       floatingActionButton: _selectedIndex == 0
-          ? FloatingActionButton(
-              onPressed: () {
-                addDeckModal(context);
-              },
-              child: Icon(Icons.add),
-            )
+          ? SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        animatedIconTheme: IconThemeData(size: 22.0),
+        animationSpeed: 100,
+        closeManually: false,
+        curve: Curves.easeInOutExpo,
+        overlayColor: Colors.black,
+        overlayOpacity: 0.5,
+        shape: CircleBorder(),
+        children: [
+          SpeedDialChild(
+            child: Icon(Icons.add),
+            backgroundColor: Color(0xFF005082),
+            label: "Add deck",
+            labelStyle: TextStyle(color: Colors.black),
+            onTap: () => addDeckModal(context),
+          ),
+          SpeedDialChild(
+              child: Icon(Icons.library_add),
+              backgroundColor: Color(0xFF005082),
+              label: "Add flashcard",
+              labelStyle: TextStyle(color: Colors.black),
+              onTap: () => addDeckModal(context),
+          ),
+        ],
+      )
           : Container(),
       bottomNavigationBar: BottomNavigationBar(
         selectedFontSize: 14,
