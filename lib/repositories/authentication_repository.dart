@@ -55,13 +55,9 @@ class AuthenticationRepository {
   }
 
   Future<void> loginWithGoogle() async {
-    try {
       var result = await googleSignIn.signIn();
       var googleKey = await result?.authentication;
       await sendIdToken(googleKey?.idToken);
-    } catch(e) {
-      print(e);
-    }
   }
 
   Future<void> signInSilently() async {

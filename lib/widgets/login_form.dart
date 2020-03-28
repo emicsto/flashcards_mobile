@@ -32,7 +32,17 @@ class LoginForm extends StatelessWidget {
       BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed());
     }
 
-    return BlocBuilder<LoginBloc, LoginState>(
+    showLoginFailureSnackBar(String message) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("Login failed"),
+      ));
+    }
+
+    return BlocListener<LoginBloc, LoginState>(listener: (context, state) {
+      if (state is LoginFailure) {
+        showLoginFailureSnackBar(state.error);
+      }
+    }, child: BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return Center(
           child: Column(
@@ -53,6 +63,6 @@ class LoginForm extends StatelessWidget {
               ]),
         );
       },
-    );
+    ));
   }
 }
