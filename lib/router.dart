@@ -1,7 +1,7 @@
 import 'package:flashcards/screens/flashcard_screen.dart';
 import 'package:flashcards/screens/home_screen.dart';
 import 'package:flashcards/screens/login_screen.dart';
-import 'package:flashcards/widgets/add_flashcard_form.dart';
+import 'package:flashcards/screens/create_flashcard_screen.dart';
 import 'package:flutter/material.dart';
 
 const String HomeViewRoute = '/';
@@ -21,7 +21,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case LoginViewRoute:
       return MaterialPageRoute(builder: (context) => LoginScreen(authenticationRepository:  settings.arguments,));
     case AddFlashcardViewRoute:
-      return MaterialPageRoute(builder: (context) => AddFlashcardForm());
+      return MaterialPageRoute(builder: (context) => CreateFlashcardScreen());
     default:
       return MaterialPageRoute(builder: (context) => HomeScreen(title: "Home"));
   }

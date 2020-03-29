@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AddFlashcardForm extends StatefulWidget {
-  const AddFlashcardForm({Key key}) : super(key: key);
+class CreateFlashcardScreen extends StatefulWidget {
+  const CreateFlashcardScreen({Key key}) : super(key: key);
 
   @override
-  AddFlashcardFormState createState() => AddFlashcardFormState();
+  CreateFlashcardScreenState createState() => CreateFlashcardScreenState();
 }
 
-class AddFlashcardFormState extends State<AddFlashcardForm> {
+class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
   final _frontController = TextEditingController();
   final _backController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -99,6 +99,7 @@ class AddFlashcardFormState extends State<AddFlashcardForm> {
                     ),
                     TextFormField(
                       keyboardType: TextInputType.multiline,
+                      minLines: 13,
                       maxLines: null,
                       focusNode: focus,
                       style: TextStyle(fontSize: 16),
@@ -109,10 +110,6 @@ class AddFlashcardFormState extends State<AddFlashcardForm> {
                       ),
                       controller: _backController,
                     ),
-//                    RaisedButton(
-//                      onPressed: () => {},
-//                      child: Text('Add flashcard'),
-//                    ),
                   ],
                 )),
           )
