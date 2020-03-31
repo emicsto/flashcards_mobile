@@ -32,6 +32,7 @@ class AuthenticationBloc
         try {
           await authenticationRepository.loginWithGoogle();
         } catch (e) {
+          await authenticationRepository.deleteAllTokens();
           print(e);
         }
       }
