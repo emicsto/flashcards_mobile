@@ -1,3 +1,4 @@
+import 'package:flashcards/models/deck.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -7,6 +8,13 @@ abstract class FlashcardEvent {
 
 class LoadFlashcard extends FlashcardEvent {
   const LoadFlashcard();
+}
+
+class SelectDeck extends FlashcardEvent {
+  final Deck deck;
+  final List<Deck> decks;
+
+  const SelectDeck(this.deck, this.decks);
 }
 
 class AddFlashcard extends FlashcardEvent {

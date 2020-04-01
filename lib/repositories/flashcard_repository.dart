@@ -30,4 +30,15 @@ class FlashcardRepository {
       throw Exception('Failed to import flashcards');
     }
   }
+
+  Future<void> addFlashcard(String deckId, String front, String back) async {
+    var dio = await getHttpClient();
+
+    final response = await dio.post('/flashcards',
+        data: jsonEncode({"deckId": deckId, "front": front, "back": back}));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to create flashcard');
+    }
+  }
 }
