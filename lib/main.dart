@@ -46,6 +46,7 @@ Future<void> main() async {
     child: App(
       authenticationRepository: authenticationRepository,
       deckRepository: deckRepository,
+      flashcardRepository: flashcardRepository,
     ),
   ));
 }
@@ -53,11 +54,13 @@ Future<void> main() async {
 class App extends StatelessWidget {
   final AuthenticationRepository authenticationRepository;
   final DeckRepository deckRepository;
+  final FlashcardRepository flashcardRepository;
 
   App(
       {Key key,
       @required this.authenticationRepository,
-      @required this.deckRepository})
+      @required this.deckRepository,
+      @required this.flashcardRepository})
       : super(key: key);
 
   @override
@@ -79,7 +82,8 @@ class App extends StatelessWidget {
       navigatorKey: navigatorKey,
       home: Home(
           authenticationRepository: authenticationRepository,
-          deckRepository: deckRepository),
+          deckRepository: deckRepository,
+          flashcardRepository: flashcardRepository),
     );
   }
 }

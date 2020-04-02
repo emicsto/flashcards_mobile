@@ -2,15 +2,18 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
 import 'package:flashcards/repositories/flashcard_repository.dart';
+import 'package:flashcards/screens/login_screen.dart';
 import 'package:flutter/widgets.dart';
 import './bloc.dart';
+import 'deck/bloc.dart';
 
 class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
+  final DeckBloc deckBloc;
   final DeckRepository deckRepository;
   final FlashcardRepository flashcardRepository;
 
-  FlashcardBloc({@required this.deckRepository, @required this.flashcardRepository})
-      : assert(deckRepository != null), assert(flashcardRepository != null);
+  FlashcardBloc({@required this.deckBloc, @required this.deckRepository, @required this.flashcardRepository})
+      : assert(deckBloc != null), assert(deckRepository != null), assert(flashcardRepository != null);
 
   @override
   FlashcardState get initialState => InitialFlashcardState();
@@ -30,7 +33,8 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
 
     if(event is AddFlashcard) {
       await flashcardRepository.addFlashcard(event.deckId, event.front, event.back);
-      yield FlashcardAdded();
+      deckBloc.add(LoadDecks());
+      navigatorKey.currentState.pop();
     }
   }
 }

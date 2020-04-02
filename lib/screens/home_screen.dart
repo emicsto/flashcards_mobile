@@ -1,5 +1,6 @@
 import 'package:flashcards/repositories/authentication_repository.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
+import 'package:flashcards/repositories/flashcard_repository.dart';
 import 'package:flashcards/screens/settings_screen.dart';
 import 'package:flashcards/widgets/add_deck_form.dart';
 import 'package:flashcards/widgets/decks.dart';
@@ -11,12 +12,14 @@ import '../router.dart';
 class HomeScreen extends StatefulWidget {
   final AuthenticationRepository authenticationRepository;
   final DeckRepository deckRepository;
+  final FlashcardRepository flashcardRepository;
   final String title;
 
   HomeScreen(
       {Key key,
       this.title,
       @required this.authenticationRepository,
+      @required this.flashcardRepository,
       @required this.deckRepository})
       : super(key: key);
 
@@ -38,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void addFlashcard(context) {
-    Navigator.pushNamed(context, AddFlashcardViewRoute);
+    Navigator.pushNamed(context, AddFlashcardViewRoute, arguments: ScreenArguments(widget.deckRepository, widget.flashcardRepository));
   }
 
   @override

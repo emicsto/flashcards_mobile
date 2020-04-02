@@ -1,3 +1,5 @@
+import 'package:flashcards/repositories/deck_repository.dart';
+import 'package:flashcards/repositories/flashcard_repository.dart';
 import 'package:flashcards/screens/flashcard_screen.dart';
 import 'package:flashcards/screens/home_screen.dart';
 import 'package:flashcards/screens/login_screen.dart';
@@ -21,8 +23,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case LoginViewRoute:
       return MaterialPageRoute(builder: (context) => LoginScreen(authenticationRepository:  settings.arguments,));
     case AddFlashcardViewRoute:
-      return MaterialPageRoute(builder: (context) => CreateFlashcardScreen());
+      ScreenArguments args = settings.arguments;
+      return MaterialPageRoute(builder: (context) => CreateFlashcardScreen(deckRepository: args.deckRepository, flashcardRepository: args.flashcardRepository, ));
     default:
       return MaterialPageRoute(builder: (context) => HomeScreen(title: "Home"));
   }
+}
+
+
+class ScreenArguments {
+  final DeckRepository deckRepository;
+  final FlashcardRepository flashcardRepository;
+
+  ScreenArguments(this.deckRepository, this.flashcardRepository);
 }

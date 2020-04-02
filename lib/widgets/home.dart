@@ -1,6 +1,7 @@
 import 'package:flashcards/blocs/authentication/bloc.dart';
 import 'package:flashcards/repositories/authentication_repository.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
+import 'package:flashcards/repositories/flashcard_repository.dart';
 import 'package:flashcards/screens/home_screen.dart';
 import 'package:flashcards/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +14,12 @@ class Home extends StatelessWidget {
     Key key,
     @required this.authenticationRepository,
     @required this.deckRepository,
+    @required this.flashcardRepository,
   }) : super(key: key);
 
   final AuthenticationRepository authenticationRepository;
   final DeckRepository deckRepository;
+  final FlashcardRepository flashcardRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,7 @@ class Home extends StatelessWidget {
           return HomeScreen(
             authenticationRepository: authenticationRepository,
             deckRepository: deckRepository,
+            flashcardRepository: flashcardRepository,
           );
         }
         if (state is AuthenticationUnauthenticated) {
