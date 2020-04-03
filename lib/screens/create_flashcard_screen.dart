@@ -26,11 +26,10 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
 
   void _handleSaveDeck(
       String deckId, String front, String back, BuildContext context) {
-    BlocProvider.of<FlashcardBloc>(context)
-        .add(AddFlashcard(deckId, front, back));
-//    if (_formKey.currentState.validate()) {
-//      Navigator.of(context).pop();
-//    }
+    if (_formKey.currentState.validate()) {
+      BlocProvider.of<FlashcardBloc>(context)
+          .add(AddFlashcard(deckId, front, back));
+    }
   }
 
   @override
@@ -60,7 +59,7 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
                         ),
                         onPressed: () => state is FlashcardLoaded
                             ? _handleSaveDeck(
-                                state.selectedDeck.id,
+                                state.selectedDeck?.id,
                                 _frontController.text,
                                 _backController.text,
                                 context)
@@ -110,14 +109,15 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   state is FlashcardLoaded
-                                      ? DropdownButton<Deck>(
+                                      ? DropdownButtonFormField<Deck>(
                                           onChanged: (Deck deck) {
                                             BlocProvider.of<FlashcardBloc>(
                                                     context)
                                                 .add(SelectDeck(
                                                     deck, state.decks));
                                           },
-                                          hint: Text("Deck"),
+                                    validator: (value) => value == null ? 'Deck is required' : null,
+                                    hint: Text("Deck"),
                                           isExpanded: true,
                                           value: state.selectedDeck,
                                           items: state.decks.map((Deck deck) {
@@ -145,10 +145,16 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
                                       FocusScope.of(context)
                                           .requestFocus(focus);
                                     },
+                                    validator: (value) {
+                                      if (value.trim().isEmpty) {
+                                        return 'Front of the flashcard can not be empty';
+                                      }
+                                      return null;
+                                    },
                                   ),
                                   TextFormField(
                                     keyboardType: TextInputType.multiline,
-                                    minLines: 13,
+                                    minLines: 5,
                                     maxLines: null,
                                     focusNode: focus,
                                     style: TextStyle(fontSize: 16),
@@ -158,6 +164,12 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
                                       border: InputBorder.none,
                                     ),
                                     controller: _backController,
+                                    validator: (value) {
+                                      if (value.trim().isEmpty) {
+                                        return 'Back of the flashcard can not be empty';
+                                      }
+                                      return null;
+                                    },
                                   ),
                                 ],
                               )),
