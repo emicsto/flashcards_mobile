@@ -70,14 +70,24 @@ class App extends StatelessWidget {
       theme: ThemeData(
           brightness: Brightness.light,
           primarySwatch: Colors.teal,
-          accentColor: Colors.cyan),
+          accentColor: Colors.teal,
+          ),
+
       darkTheme: ThemeData(
           brightness: Brightness.dark,
           primarySwatch: Colors.teal,
           accentColor: Color(0xFF268979),
           buttonTheme: ButtonThemeData(
             buttonColor: Colors.white12,
-          )),
+          ),
+        appBarTheme: AppBarTheme(
+          color: Color(0xFF1F2025),
+          iconTheme: IconThemeData(color: Color(0xFF9BA0A6)),
+        ),
+        bottomAppBarTheme: BottomAppBarTheme(
+          elevation: 8
+        ),
+      ),
       onGenerateRoute: router.generateRoute,
       navigatorKey: navigatorKey,
       home: Home(

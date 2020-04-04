@@ -46,6 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var isBrightnessDark = WidgetsBinding.instance.window.platformBrightness == Brightness.dark ? true : false;
+
     return Scaffold(
       appBar: AppBar(
         title: Container(
@@ -72,14 +74,14 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 SpeedDialChild(
                   child: Icon(Icons.add),
-                  backgroundColor: Color(0xFF005082),
+                  backgroundColor: isBrightnessDark ? Color(0xFF005082) : Colors.teal,
                   label: "Add deck",
                   labelStyle: TextStyle(color: Colors.black),
                   onTap: () => addDeckModal(context),
                 ),
                 SpeedDialChild(
                   child: Icon(Icons.library_add),
-                  backgroundColor: Color(0xFF005082),
+                  backgroundColor: isBrightnessDark ? Color(0xFF005082) : Colors.teal,
                   label: "Add flashcard",
                   labelStyle: TextStyle(color: Colors.black),
                   onTap: () => addFlashcard(context),
@@ -90,8 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         selectedFontSize: 14,
         unselectedFontSize: 14,
-        backgroundColor: Colors.black26,
-        elevation: 0,
         selectedItemColor: Colors.teal,
         iconSize: 25,
         items: const <BottomNavigationBarItem>[

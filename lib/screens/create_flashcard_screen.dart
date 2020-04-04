@@ -34,6 +34,7 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return BlocProvider<FlashcardBloc>(
         create: (context) => FlashcardBloc(
           deckBloc: BlocProvider.of<DeckBloc>(context),
@@ -119,31 +120,25 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
                 var bottomBarButtons = <Widget>[
                             IconButton(
                               icon: Icon(Icons.edit),
-                              color: Colors.white,
                               onPressed: () {},
                             ),
                             IconButton(
                               icon: Icon(Icons.format_bold),
-                              color: Colors.white,
                               onPressed: () {},
                             ),
                             IconButton(
                               icon: Icon(Icons.format_align_center),
-                              color: Colors.white,
                               onPressed: () {},
                             ),
                             IconButton(
                               icon: Icon(Icons.format_align_justify),
-                              color: Colors.white,
                               onPressed: () {},
                             )
                           ];
 
                 return Scaffold(
-                    backgroundColor: Color(0xFF1F2025),
+                    backgroundColor: WidgetsBinding.instance.window.platformBrightness == Brightness.dark ? Color(0xFF1F2025) : null,
                     appBar: AppBar(
-                      iconTheme: IconThemeData(color: Color(0xFF9BA0A6)),
-                      backgroundColor: Color(0xFF1F2025),
                       elevation: 0,
                     ),
                     floatingActionButtonLocation:
