@@ -3,6 +3,7 @@ import 'package:flashcards/blocs/deck/bloc.dart';
 import 'package:flashcards/models/deck.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
 import 'package:flashcards/repositories/flashcard_repository.dart';
+import 'package:flashcards/widgets/loader_centered.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,10 @@ class CreateFlashcardScreen extends StatefulWidget {
   final DeckRepository deckRepository;
   final FlashcardRepository flashcardRepository;
 
-  const CreateFlashcardScreen({Key key, @required this.deckRepository, @required this.flashcardRepository})
+  const CreateFlashcardScreen(
+      {Key key,
+      @required this.deckRepository,
+      @required this.flashcardRepository})
       : super(key: key);
 
   @override
@@ -34,10 +38,9 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocProvider<FlashcardBloc>(
         create: (context) => FlashcardBloc(
-          deckBloc: BlocProvider.of<DeckBloc>(context),
+              deckBloc: BlocProvider.of<DeckBloc>(context),
               deckRepository: widget.deckRepository,
               flashcardRepository: widget.flashcardRepository,
             )..add(LoadFlashcard()),
@@ -45,99 +48,101 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
             listener: (context, state) {},
             child: BlocBuilder<FlashcardBloc, FlashcardState>(
               builder: (context, state) {
-                var createFlashcardForm = Form(
-                              key: _formKey,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  state is FlashcardLoaded
-                                      ? DropdownButtonFormField<Deck>(
-                                          onChanged: (Deck deck) {
-                                            BlocProvider.of<FlashcardBloc>(
-                                                    context)
-                                                .add(SelectDeck(
-                                                    deck, state.decks));
-                                          },
-                                    validator: (value) => value == null ? 'Deck is required' : null,
-                                    hint: Text("Deck"),
-                                          isExpanded: true,
-                                          value: state.selectedDeck,
-                                          items: state.decks.map((Deck deck) {
-                                            return DropdownMenuItem<Deck>(
-                                              value: deck,
-                                              child: Text(deck.name),
-                                            );
-                                          }).toList(),
-                                        )
-                                      : Container(),
-                                  TextFormField(
-                                    keyboardType: TextInputType.multiline,
-                                    minLines: 1,
-                                    maxLines: null,
-                                    controller: _frontController,
-                                    autofocus: true,
-                                    style: TextStyle(fontSize: 22),
-                                    decoration: InputDecoration(
-                                      hintText: "Front",
-                                      hintStyle: TextStyle(fontSize: 22),
-                                      border: InputBorder.none,
-                                    ),
-                                    textInputAction: TextInputAction.next,
-                                    onFieldSubmitted: (_) {
-                                      FocusScope.of(context)
-                                          .requestFocus(focus);
-                                    },
-                                    validator: (value) {
-                                      if (value.trim().isEmpty) {
-                                        return 'Front of the flashcard can not be empty';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  TextFormField(
-                                    keyboardType: TextInputType.multiline,
-                                    minLines: 5,
-                                    maxLines: null,
-                                    focusNode: focus,
-                                    style: TextStyle(fontSize: 16),
-                                    decoration: InputDecoration(
-                                      hintText: "Back",
-                                      hintStyle: TextStyle(fontSize: 16),
-                                      border: InputBorder.none,
-                                    ),
-                                    controller: _backController,
-                                    validator: (value) {
-                                      if (value.trim().isEmpty) {
-                                        return 'Back of the flashcard can not be empty';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ],
-                              ));
+                var createFlashcardForm = state is FlashcardLoaded
+                    ? Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            DropdownButtonFormField<Deck>(
+                              onChanged: (Deck deck) {
+                                BlocProvider.of<FlashcardBloc>(context)
+                                    .add(SelectDeck(deck, state.decks));
+                              },
+                              validator: (value) =>
+                                  value == null ? 'Deck is required' : null,
+                              hint: Text("Deck"),
+                              isExpanded: true,
+                              value: state.selectedDeck,
+                              items: state.decks.map((Deck deck) {
+                                return DropdownMenuItem<Deck>(
+                                  value: deck,
+                                  child: Text(deck.name),
+                                );
+                              }).toList(),
+                            ),
+                            TextFormField(
+                              keyboardType: TextInputType.multiline,
+                              minLines: 1,
+                              maxLines: null,
+                              controller: _frontController,
+                              autofocus: true,
+                              style: TextStyle(fontSize: 22),
+                              decoration: InputDecoration(
+                                hintText: "Front",
+                                hintStyle: TextStyle(fontSize: 22),
+                                border: InputBorder.none,
+                              ),
+                              textInputAction: TextInputAction.next,
+                              onFieldSubmitted: (_) {
+                                FocusScope.of(context).requestFocus(focus);
+                              },
+                              validator: (value) {
+                                if (value.trim().isEmpty) {
+                                  return 'Front of the flashcard can not be empty';
+                                }
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              keyboardType: TextInputType.multiline,
+                              minLines: 5,
+                              maxLines: null,
+                              focusNode: focus,
+                              style: TextStyle(fontSize: 16),
+                              decoration: InputDecoration(
+                                hintText: "Back",
+                                hintStyle: TextStyle(fontSize: 16),
+                                border: InputBorder.none,
+                              ),
+                              controller: _backController,
+                              validator: (value) {
+                                if (value.trim().isEmpty) {
+                                  return 'Back of the flashcard can not be empty';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                        ))
+                    : LoaderCentered();
 
                 var bottomBarButtons = <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () {},
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.format_bold),
-                              onPressed: () {},
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.format_align_center),
-                              onPressed: () {},
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.format_align_justify),
-                              onPressed: () {},
-                            )
-                          ];
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.format_bold),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.format_align_center),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.format_align_justify),
+                    onPressed: () {},
+                  )
+                ];
 
                 return Scaffold(
-                    backgroundColor: WidgetsBinding.instance.window.platformBrightness == Brightness.dark ? Color(0xFF1F2025) : null,
+                    backgroundColor:
+                        WidgetsBinding.instance.window.platformBrightness ==
+                                Brightness.dark
+                            ? Color(0xFF1F2025)
+                            : null,
                     appBar: AppBar(
                       elevation: 0,
                     ),
@@ -167,14 +172,88 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
                         ),
                       ),
                     ),
-                    body: ListView(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(22),
-                          child: createFlashcardForm,
-                        )
-                      ],
-                    ));
+                    body: state is FlashcardLoaded
+                        ? ListView(
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.all(22),
+                                child: Form(
+                                    key: _formKey,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        DropdownButtonFormField<Deck>(
+                                          onChanged: (Deck deck) {
+                                            BlocProvider.of<FlashcardBloc>(
+                                                    context)
+                                                .add(SelectDeck(
+                                                    deck, state.decks));
+                                          },
+                                          validator: (value) => value == null
+                                              ? 'Deck is required'
+                                              : null,
+                                          hint: Text("Deck"),
+                                          isExpanded: true,
+                                          value: state.selectedDeck,
+                                          items: state.decks.map((Deck deck) {
+                                            return DropdownMenuItem<Deck>(
+                                              value: deck,
+                                              child: Text(deck.name),
+                                            );
+                                          }).toList(),
+                                        ),
+                                        TextFormField(
+                                          keyboardType: TextInputType.multiline,
+                                          minLines: 1,
+                                          maxLines: null,
+                                          controller: _frontController,
+                                          autofocus: true,
+                                          style: TextStyle(fontSize: 22),
+                                          decoration: InputDecoration(
+                                            hintText: "Front",
+                                            hintStyle: TextStyle(fontSize: 22),
+                                            border: InputBorder.none,
+                                          ),
+                                          textInputAction: TextInputAction.next,
+                                          onFieldSubmitted: (_) {
+                                            FocusScope.of(context)
+                                                .requestFocus(focus);
+                                          },
+                                          validator: (value) {
+                                            if (value.trim().isEmpty) {
+                                              return 'Front of the flashcard can not be empty';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        TextFormField(
+                                          keyboardType: TextInputType.multiline,
+                                          minLines: 5,
+                                          maxLines: null,
+                                          focusNode: focus,
+                                          style: TextStyle(fontSize: 16),
+                                          decoration: InputDecoration(
+                                            hintText: "Back",
+                                            hintStyle: TextStyle(fontSize: 16),
+                                            border: InputBorder.none,
+                                          ),
+                                          controller: _backController,
+                                          validator: (value) {
+                                            if (value.trim().isEmpty) {
+                                              return 'Back of the flashcard can not be empty';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ],
+                                    )),
+                              )
+                            ],
+                          )
+                        : LoaderCentered());
               },
             )));
   }
