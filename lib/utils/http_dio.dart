@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flashcards/models/access_token.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:logger/logger.dart';
 
 import '../main.dart';
 

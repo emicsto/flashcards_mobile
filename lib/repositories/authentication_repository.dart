@@ -41,6 +41,7 @@ class AuthenticationRepository {
       await storage.write(key: "email", value: user.email);
       await storage.write(key: "pictureUrl", value: user.pictureUrl ?? "");
     } else {
+      await deleteAllTokens();
       throw Exception('Failed to get user info');
     }
   }
