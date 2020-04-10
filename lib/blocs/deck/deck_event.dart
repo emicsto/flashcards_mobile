@@ -20,6 +20,12 @@ class ShowDeckTapped extends DeckEvent {
   const ShowDeckTapped(this.deckId);
 }
 
+class LoadDeckFlashcards extends DeckEvent {
+  final String deckId;
+
+  const LoadDeckFlashcards(this.deckId);
+}
+
 class DeleteDeck extends DeckEvent {
   final String deckId;
 
