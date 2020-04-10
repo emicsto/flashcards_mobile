@@ -1,5 +1,6 @@
 import 'package:flashcards/blocs/deck/bloc.dart';
 import 'package:flashcards/models/deck.dart';
+import 'package:flashcards/screens/flashcards_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,7 @@ class DeckCard extends StatelessWidget {
       );
     }
 
-    showDeckDeletedSnackBar() {
+    _showDeckDeletedSnackBar() {
       Scaffold.of(context).showSnackBar(SnackBar(
           duration: Duration(milliseconds: 2500),
           content: Text("Deck successfully deleted"),
@@ -33,23 +34,53 @@ class DeckCard extends StatelessWidget {
             })));
     }
 
+    _onShowFlashcardsTapped(String id) {
+      Navigator.of(context).pop();
+      BlocProvider.of<DeckBloc>(context).add(
+          LoadDeckFlashcards(id);
+      );
+    }
+
     void onDeckLongPress(context, String id) {
       showModalBottomSheet(
           context: context,
-          builder: (_) => ListTile(
-              leading: Icon(
-                Icons.delete,
-                size: 20,
-              ),
-              title: Text('Delete deck'),
-              onTap: () {
-                BlocProvider.of<DeckBloc>(context).add(
-                  DeleteDeck(id),
-                );
-                Navigator.of(context).pop();
-                showDeckDeletedSnackBar();
-              }));
+          builder: (_) => ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              ListTile(
+                  leading: Icon(
+                    Icons.delete,
+                    size: 20,
+                  ),
+                  title: Text('Delete deck'),
+                  onTap: () {
+                    BlocProvider.of<DeckBloc>(context).add(
+                      DeleteDeck(id),
+                    );
+                    Navigator.of(context).pop();
+                    _showDeckDeletedSnackBar();
+                  }),
+              ListTile(
+                  leading: Icon(
+                    Icons.edit,
+                    size: 20,
+                  ),
+                  title: Text('Rename deck'),
+                  onTap: () {
+                   // TODO: implement
+                  }),
+              ListTile(
+                  leading: Icon(
+                    Icons.filter_none,
+                    size: 20,
+                  ),
+                  title: Text('Flashcards'),
+                  onTap: () => _onShowFlashcardsTapped(id)),
+            ],
+          ),
+      );
     }
+
 
     var deck = decks[index];
     return BlocListener<DeckBloc, DeckState>(
