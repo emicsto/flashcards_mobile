@@ -15,15 +15,15 @@ class AddDeck extends DeckEvent {
 }
 
 class ShowDeckTapped extends DeckEvent {
-  final String deckId;
+  final Deck deck;
 
-  const ShowDeckTapped(this.deckId);
+  const ShowDeckTapped(this.deck);
 }
 
 class LoadDeckFlashcards extends DeckEvent {
-  final String deckId;
+  final Deck deck;
 
-  const LoadDeckFlashcards(this.deckId);
+  const LoadDeckFlashcards(this.deck);
 }
 
 class DeleteDeck extends DeckEvent {

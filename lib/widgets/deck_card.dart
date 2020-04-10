@@ -1,6 +1,5 @@
 import 'package:flashcards/blocs/deck/bloc.dart';
 import 'package:flashcards/models/deck.dart';
-import 'package:flashcards/screens/flashcards_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,9 +16,9 @@ class DeckCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _onDeckTapped(String id) {
+    _onDeckTapped(Deck deck) {
       BlocProvider.of<DeckBloc>(context).add(
-        ShowDeckTapped(id),
+        ShowDeckTapped(deck),
       );
     }
 
@@ -34,14 +33,14 @@ class DeckCard extends StatelessWidget {
             })));
     }
 
-    _onShowFlashcardsTapped(String id) {
+    _onShowFlashcardsTapped(Deck deck) {
       Navigator.of(context).pop();
       BlocProvider.of<DeckBloc>(context).add(
-          LoadDeckFlashcards(id);
+          LoadDeckFlashcards(deck)
       );
     }
 
-    void onDeckLongPress(context, String id) {
+    void onDeckLongPress(context, Deck deck) {
       showModalBottomSheet(
           context: context,
           builder: (_) => ListView(
@@ -55,7 +54,7 @@ class DeckCard extends StatelessWidget {
                   title: Text('Delete deck'),
                   onTap: () {
                     BlocProvider.of<DeckBloc>(context).add(
-                      DeleteDeck(id),
+                      DeleteDeck(deck.id),
                     );
                     Navigator.of(context).pop();
                     _showDeckDeletedSnackBar();
@@ -75,7 +74,7 @@ class DeckCard extends StatelessWidget {
                     size: 20,
                   ),
                   title: Text('Flashcards'),
-                  onTap: () => _onShowFlashcardsTapped(id)),
+                  onTap: () => _onShowFlashcardsTapped(deck)),
             ],
           ),
       );
@@ -95,8 +94,8 @@ class DeckCard extends StatelessWidget {
               child: Card(
                 elevation: 2,
                 child:           InkWell(
-                  onTap: () => _onDeckTapped(deck.id),
-                  onLongPress: () => onDeckLongPress(context, deck.id),
+                  onTap: () => _onDeckTapped(deck),
+                  onLongPress: () => onDeckLongPress(context, deck),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,

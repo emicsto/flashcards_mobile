@@ -20,7 +20,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case HomeViewRoute:
       return MaterialPageRoute(builder: (context) => HomeScreen(title: "Home"));
     case CardViewRoute:
-      return MaterialPageRoute(builder: (context) => FlashcardScreen(deckId: settings.arguments));
+      return MaterialPageRoute(builder: (context) => FlashcardScreen(deck: settings.arguments));
     case EmptyDeckViewRoute:
       return MaterialPageRoute(builder: (context) => FlashcardScreen());
     case LoginViewRoute:
@@ -29,7 +29,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       ScreenArguments args = settings.arguments;
       return MaterialPageRoute(builder: (context) => CreateFlashcardScreen(deckRepository: args.deckRepository, flashcardRepository: args.flashcardRepository, ));
     case CardsViewRoute:
-      return MaterialPageRoute(builder: (context) => FlashcardsScreen(deckId: settings.arguments));
+      return MaterialPageRoute(builder: (context) => FlashcardsScreen(deck: settings.arguments));
     default:
       return MaterialPageRoute(builder: (context) => HomeScreen(title: "Home"));
   }

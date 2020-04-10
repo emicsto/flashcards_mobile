@@ -1,5 +1,5 @@
 import 'package:flashcards/models/card_model.dart';
-import 'package:flashcards/widgets/flashcard.dart';
+import 'package:flashcards/models/deck.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -9,11 +9,11 @@ abstract class FlashcardsEvent {
 
 class LoadFlashcards extends FlashcardsEvent {
   final List<CardModel> flashcards;
-  final String deckId;
+  final Deck deck;
   final int page;
   final int index;
 
-  const LoadFlashcards(this.flashcards, this.deckId, this.page, this.index);
+  const LoadFlashcards(this.flashcards, this.deck, this.page, this.index);
 }
 
 class IncrementIndex extends FlashcardsEvent {

@@ -1,4 +1,5 @@
 import 'package:flashcards/models/card_model.dart';
+import 'package:flashcards/models/deck.dart';
 import 'package:flashcards/screens/empty_deck_screen.dart';
 import 'package:flashcards/utils/assessment.dart';
 import 'package:flashcards/widgets/flashcard.dart';
@@ -13,9 +14,9 @@ import '../blocs/flashcards/bloc.dart';
 GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
 class FlashcardScreen extends StatefulWidget {
-  final String deckId;
+  final Deck deck;
 
-  FlashcardScreen({Key key, this.deckId}) : super(key: key);
+  FlashcardScreen({Key key, this.deck}) : super(key: key);
 
   @override
   _FlashcardScreenState createState() => _FlashcardScreenState();
@@ -24,12 +25,12 @@ class FlashcardScreen extends StatefulWidget {
 class _FlashcardScreenState extends State<FlashcardScreen> {
   loadNextPage(int index, int page, List<CardModel> cards) async {
     BlocProvider.of<FlashcardsBloc>(context)
-        .add(LoadFlashcards(cards, widget.deckId, page, index));
+        .add(LoadFlashcards(cards, widget.deck, page, index));
   }
 
   nextCard(int index, int page, List<CardModel> cards) {
     BlocProvider.of<FlashcardsBloc>(context)
-        .add(IncrementIndex(cards, widget.deckId, page, index));
+        .add(IncrementIndex(cards, widget.deck.id, page, index));
     setState(() {
       if (!cardKey.currentState.isFront) {
         cardKey.currentState.setFront();

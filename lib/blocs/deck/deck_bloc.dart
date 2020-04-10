@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:flashcards/models/deck.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
 import 'package:flashcards/screens/login_screen.dart';
 import 'package:flutter/widgets.dart';
@@ -30,9 +31,9 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
     } else if (event is ShowDeckTapped) {
       var firstPage = 0;
       flashcardsBloc
-          .add(LoadFlashcards(new List(), event.deckId, firstPage, 0));
+          .add(LoadFlashcards(new List(), event.deck, firstPage, 0));
       navigatorKey.currentState
-          .pushNamed(CardViewRoute, arguments: event.deckId);
+          .pushNamed(CardViewRoute, arguments: event.deck);
     } else if (event is DeleteDeck) {
       await deckRepository.delete(event.deckId);
       add(LoadDecks());
@@ -42,9 +43,9 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
     } else if (event is LoadDeckFlashcards) {
       var firstPage = 0;
       flashcardsBloc
-          .add(LoadFlashcards(new List(), event.deckId, firstPage, 0));
+          .add(LoadFlashcards(new List(), event.deck, firstPage, 0));
       navigatorKey.currentState
-          .pushNamed(CardsViewRoute, arguments: event.deckId);
+          .pushReplacementNamed(CardsViewRoute, arguments: event.deck);
     }
   }
 }

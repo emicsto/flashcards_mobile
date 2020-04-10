@@ -26,7 +26,7 @@ class FlashcardsBloc extends Bloc<FlashcardsEvent, FlashcardsState> {
 
       var flashcards = event.flashcards;
       flashcards.addAll(await flashcardRepository.getFlashcardsByDeckId(
-          deckId: event.deckId, page: event.page));
+          deckId: event.deck.id, page: event.page));
 
       if (flashcards.isEmpty) {
         yield NoFlashcards();
