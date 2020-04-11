@@ -34,7 +34,6 @@ class DeckCard extends StatelessWidget {
     }
 
     _onShowFlashcardsTapped(Deck deck) {
-      Navigator.of(context).pop();
       BlocProvider.of<DeckBloc>(context).add(
           LoadDeckFlashcards(deck)
       );

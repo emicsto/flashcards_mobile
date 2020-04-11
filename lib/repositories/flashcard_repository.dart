@@ -8,7 +8,7 @@ class FlashcardRepository {
       {String deckId, int page = 0}) async {
     var dio = await getHttpClient();
     final response = await dio.get('/decks/$deckId/flashcards',
-        queryParameters: {"page": page, "size": 10});
+        queryParameters: {"page": page});
 
     if (response.statusCode == 200) {
       return response.data
