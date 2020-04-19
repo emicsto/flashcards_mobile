@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void addFlashcard(context) {
-    Navigator.pushNamed(context, AddFlashcardViewRoute, arguments: ScreenArguments(widget.deckRepository, widget.flashcardRepository));
+    Navigator.pushNamed(context, AddFlashcardViewRoute, arguments: ScreenArguments(deckRepository: widget.deckRepository, flashcardRepository: widget.flashcardRepository));
   }
 
   @override

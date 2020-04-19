@@ -49,6 +49,6 @@ class FlashcardsScreen extends StatelessWidget {
   }
 
   void _addFlashcard(context) {
-    Navigator.pushNamed(context, AddFlashcardViewRoute, arguments: ScreenArguments(deckRepository, flashcardRepository));
+    Navigator.pushNamed(context, AddFlashcardViewRoute, arguments: ScreenArguments(deckRepository: deckRepository, flashcardRepository: flashcardRepository));
   }
 }

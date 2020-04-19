@@ -6,6 +6,7 @@ import 'package:flashcards/screens/login_screen.dart';
 import 'package:flashcards/screens/create_flashcard_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'models/deck.dart';
 import 'screens/flashcards_screen.dart';
 
 const String HomeViewRoute = '/';
@@ -29,7 +30,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       ScreenArguments args = settings.arguments;
       return MaterialPageRoute(builder: (context) => CreateFlashcardScreen(deckRepository: args.deckRepository, flashcardRepository: args.flashcardRepository, ));
     case CardsViewRoute:
-      return MaterialPageRoute(builder: (context) => FlashcardsScreen(deck: settings.arguments));
+      ScreenArguments args = settings.arguments;
+      return MaterialPageRoute(builder: (context) => FlashcardsScreen(deck: args.deck, flashcardRepository: args.flashcardRepository, deckRepository: args.deckRepository,));
     default:
       return MaterialPageRoute(builder: (context) => HomeScreen(title: "Home"));
   }
@@ -39,6 +41,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 class ScreenArguments {
   final DeckRepository deckRepository;
   final FlashcardRepository flashcardRepository;
+  final Deck deck;
 
-  ScreenArguments(this.deckRepository, this.flashcardRepository);
+  ScreenArguments({this.deckRepository, this.flashcardRepository, this.deck});
 }

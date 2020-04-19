@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flashcards/models/deck.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
+import 'package:flashcards/repositories/flashcard_repository.dart';
 import 'package:flashcards/screens/login_screen.dart';
 import 'package:flutter/widgets.dart';
 import '../../router.dart';
@@ -11,10 +11,12 @@ import '../flashcards/bloc.dart';
 class DeckBloc extends Bloc<DeckEvent, DeckState> {
   final DeckRepository deckRepository;
   final FlashcardsBloc flashcardsBloc;
+  final FlashcardRepository flashcardRepository;
 
-  DeckBloc({@required this.deckRepository, @required this.flashcardsBloc})
+  DeckBloc({@required this.deckRepository, @required this.flashcardsBloc, @required this.flashcardRepository})
       : assert(deckRepository != null),
-        assert(flashcardsBloc != null);
+        assert(flashcardsBloc != null),
+        assert(flashcardRepository != null);
 
   @override
   DeckState get initialState => DeckInitial();
@@ -45,7 +47,7 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
       flashcardsBloc
           .add(LoadFlashcards(new List(), event.deck, firstPage, 0));
       navigatorKey.currentState
-          .pushReplacementNamed(CardsViewRoute, arguments: event.deck);
+          .pushReplacementNamed(CardsViewRoute, arguments: ScreenArguments(deck: event.deck, flashcardRepository: flashcardRepository, deckRepository: deckRepository));
     }
   }
 }

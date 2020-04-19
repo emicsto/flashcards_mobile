@@ -34,6 +34,7 @@ Future<void> main() async {
         create: (context) => DeckBloc(
           deckRepository: deckRepository,
           flashcardsBloc: BlocProvider.of<FlashcardsBloc>(context),
+          flashcardRepository: flashcardRepository,
         ),
       ),
       BlocProvider<AuthenticationBloc>(
