@@ -1,5 +1,6 @@
 import 'package:flashcards/blocs/bloc.dart';
 import 'package:flashcards/blocs/deck/bloc.dart';
+import 'package:flashcards/models/card_model.dart';
 import 'package:flashcards/models/deck.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
 import 'package:flashcards/repositories/flashcard_repository.dart';
@@ -11,11 +12,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CreateFlashcardScreen extends StatefulWidget {
   final DeckRepository deckRepository;
   final FlashcardRepository flashcardRepository;
+  final CardModel flashcard;
 
   const CreateFlashcardScreen(
       {Key key,
       @required this.deckRepository,
-      @required this.flashcardRepository})
+      @required this.flashcardRepository,
+      this.flashcard})
       : super(key: key);
 
   @override
@@ -27,6 +30,13 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
   final _backController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final focus = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _frontController.text = widget.flashcard?.front?? null;
+    _backController.text = widget.flashcard?.back?? null;
+  }
 
   void _handleSaveDeck(
       String deckId, String front, String back, BuildContext context) {
@@ -43,7 +53,7 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
               deckBloc: BlocProvider.of<DeckBloc>(context),
               deckRepository: widget.deckRepository,
               flashcardRepository: widget.flashcardRepository,
-            )..add(LoadFlashcard()),
+            )..add(LoadFlashcard(widget.flashcard?.deckId?? null)),
         child: BlocListener<FlashcardBloc, FlashcardState>(
             listener: (context, state) {},
             child: BlocBuilder<FlashcardBloc, FlashcardState>(
@@ -257,4 +267,5 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
               },
             )));
   }
+
 }

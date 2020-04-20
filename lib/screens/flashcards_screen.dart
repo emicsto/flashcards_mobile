@@ -1,8 +1,10 @@
+import 'package:flashcards/models/card_model.dart';
 import 'package:flashcards/models/deck.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
 import 'package:flashcards/repositories/flashcard_repository.dart';
 import 'package:flashcards/router.dart';
 import 'package:flashcards/screens/empty_deck_screen.dart';
+import 'package:flashcards/widgets/flashcard.dart';
 import 'package:flashcards/widgets/loader_centered.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +34,7 @@ class FlashcardsScreen extends StatelessWidget {
                    ),
                   itemCount: state.flashcards.length,
                     itemBuilder: (context, index) =>
-                        _makeRow(state.flashcards[index].front, context));
+                        _makeRow(state.flashcards[index], context));
               } else {
                 return LoaderCentered();
               }
@@ -41,14 +43,14 @@ class FlashcardsScreen extends StatelessWidget {
         ));
   }
 
-  _makeRow(String front, BuildContext context) {
+  _makeRow(CardModel flashcard, BuildContext context) {
     return ListTile(
-      title: Text(front),
-      onTap: () => _addFlashcard(context),
+      title: Text(flashcard.front),
+      onTap: () => _addFlashcard(flashcard, context),
     );
   }
 
-  void _addFlashcard(context) {
-    Navigator.pushNamed(context, AddFlashcardViewRoute, arguments: ScreenArguments(deckRepository: deckRepository, flashcardRepository: flashcardRepository));
+  void _addFlashcard(CardModel flashcard, BuildContext context) {
+    Navigator.pushNamed(context, AddFlashcardViewRoute, arguments: ScreenArguments(deckRepository: deckRepository, flashcardRepository: flashcardRepository, flashcard: flashcard));
   }
 }

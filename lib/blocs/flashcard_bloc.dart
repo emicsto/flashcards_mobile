@@ -24,7 +24,12 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
   ) async* {
     if(event is LoadFlashcard) {
       var decks = await deckRepository.fetchDecks();
-      yield FlashcardLoaded(null, decks);
+      if(event.selectedDeckId == null) {
+        yield FlashcardLoaded(null, decks);
+      } else {
+        var deck = decks.firstWhere((deck) => deck.id == event.selectedDeckId);
+        yield FlashcardLoaded(deck, decks);
+      }
     }
 
     if(event is SelectDeck) {
