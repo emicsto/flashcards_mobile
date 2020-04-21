@@ -41,4 +41,15 @@ class FlashcardRepository {
       throw Exception('Failed to create flashcard');
     }
   }
+
+  Future<void> updateFlashcard(String flashcardId, String deckId, String front, String back) async {
+    var dio = await getHttpClient();
+
+    final response = await dio.put('/flashcards',
+        data: jsonEncode({"id": flashcardId, "deckId": deckId, "front": front, "back": back}));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update flashcard');
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:flashcards/blocs/flashcards/bloc.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
 import 'package:flashcards/repositories/flashcard_repository.dart';
 import 'package:flashcards/screens/login_screen.dart';
@@ -11,8 +12,9 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
   final DeckBloc deckBloc;
   final DeckRepository deckRepository;
   final FlashcardRepository flashcardRepository;
+  final FlashcardsBloc flashcardsBloc;
 
-  FlashcardBloc({@required this.deckBloc, @required this.deckRepository, @required this.flashcardRepository})
+  FlashcardBloc({@required this.deckBloc, @required this.deckRepository, @required this.flashcardRepository, @required this.flashcardsBloc})
       : assert(deckBloc != null), assert(deckRepository != null), assert(flashcardRepository != null);
 
   @override
@@ -39,6 +41,12 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
     if(event is AddFlashcard) {
       await flashcardRepository.addFlashcard(event.deckId, event.front, event.back);
       deckBloc.add(LoadDecks());
+      navigatorKey.currentState.pop();
+    }
+
+    if(event is UpdateFlashcard) {
+      await flashcardRepository.updateFlashcard(event.flashcardId, event.deck.id, event.front, event.back);
+      flashcardsBloc.add(LoadFlashcards(new List(), event.deck, 0, 0));
       navigatorKey.currentState.pop();
     }
   }

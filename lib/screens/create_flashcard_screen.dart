@@ -1,5 +1,6 @@
 import 'package:flashcards/blocs/bloc.dart';
 import 'package:flashcards/blocs/deck/bloc.dart';
+import 'package:flashcards/blocs/flashcards/bloc.dart';
 import 'package:flashcards/models/card_model.dart';
 import 'package:flashcards/models/deck.dart';
 import 'package:flashcards/repositories/deck_repository.dart';
@@ -12,12 +13,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CreateFlashcardScreen extends StatefulWidget {
   final DeckRepository deckRepository;
   final FlashcardRepository flashcardRepository;
+  final FlashcardBloc flashcardBloc;
   final CardModel flashcard;
 
   const CreateFlashcardScreen(
       {Key key,
       @required this.deckRepository,
       @required this.flashcardRepository,
+      @required this.flashcardBloc,
       this.flashcard})
       : super(key: key);
 
@@ -39,10 +42,13 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
   }
 
   void _handleSaveDeck(
-      String deckId, String front, String back, BuildContext context) {
+      String flashcardId, Deck deck, String front, String back, BuildContext context) {
     if (_formKey.currentState.validate()) {
-      BlocProvider.of<FlashcardBloc>(context)
-          .add(AddFlashcard(deckId, front, back));
+      if(flashcardId == null) {
+        BlocProvider.of<FlashcardBloc>(context).add(AddFlashcard(deck.id, front, back));
+      } else {
+        BlocProvider.of<FlashcardBloc>(context).add(UpdateFlashcard(flashcardId, deck, front, back));
+      }
     }
   }
 
@@ -53,7 +59,8 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
               deckBloc: BlocProvider.of<DeckBloc>(context),
               deckRepository: widget.deckRepository,
               flashcardRepository: widget.flashcardRepository,
-            )..add(LoadFlashcard(widget.flashcard?.deckId?? null)),
+              flashcardsBloc: BlocProvider.of<FlashcardsBloc>(context),
+        )..add(LoadFlashcard(widget.flashcard?.deckId?? null)),
         child: BlocListener<FlashcardBloc, FlashcardState>(
             listener: (context, state) {},
             child: BlocBuilder<FlashcardBloc, FlashcardState>(
@@ -164,7 +171,8 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
                         ),
                         onPressed: () => state is FlashcardLoaded
                             ? _handleSaveDeck(
-                                state.selectedDeck?.id,
+                                widget.flashcard?.id ?? null,
+                                state.selectedDeck,
                                 _frontController.text,
                                 _backController.text,
                                 context)

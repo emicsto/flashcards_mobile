@@ -32,10 +32,3 @@ class ImportFlashcards extends FlashcardsEvent {
   const ImportFlashcards(this.deckId, this.flashcardsCsv);
 }
 
-class AddFlashcard extends FlashcardsEvent {
-  final String deckId;
-  final String front;
-  final String back;
-
-  const AddFlashcard(this.deckId, this.front, this.back);
-}

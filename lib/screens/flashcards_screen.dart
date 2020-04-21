@@ -4,7 +4,6 @@ import 'package:flashcards/repositories/deck_repository.dart';
 import 'package:flashcards/repositories/flashcard_repository.dart';
 import 'package:flashcards/router.dart';
 import 'package:flashcards/screens/empty_deck_screen.dart';
-import 'package:flashcards/widgets/flashcard.dart';
 import 'package:flashcards/widgets/loader_centered.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

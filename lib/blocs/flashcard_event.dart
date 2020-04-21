@@ -9,7 +9,7 @@ abstract class FlashcardEvent {
 class LoadFlashcard extends FlashcardEvent {
   final String selectedDeckId;
 
-  const LoadFlashcard(this.selectedDeckId);
+  const LoadFlashcard([this.selectedDeckId]);
 }
 
 class SelectDeck extends FlashcardEvent {
@@ -25,6 +25,15 @@ class AddFlashcard extends FlashcardEvent {
   final String back;
 
   const AddFlashcard(this.deckId, this.front, this.back);
+}
+
+class UpdateFlashcard extends FlashcardEvent {
+  final String flashcardId;
+  final Deck deck;
+  final String front;
+  final String back;
+
+  const UpdateFlashcard(this.flashcardId, this.deck, this.front, this.back);
 }
 
 
