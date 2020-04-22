@@ -32,8 +32,9 @@ class UpdateFlashcard extends FlashcardEvent {
   final Deck deck;
   final String front;
   final String back;
+  final Deck targetDeck;
 
-  const UpdateFlashcard(this.flashcardId, this.deck, this.front, this.back);
+  const UpdateFlashcard(this.flashcardId, this.deck, this.front, this.back, this.targetDeck);
 }
 
 

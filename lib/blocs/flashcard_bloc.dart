@@ -46,7 +46,8 @@ class FlashcardBloc extends Bloc<FlashcardEvent, FlashcardState> {
 
     if(event is UpdateFlashcard) {
       await flashcardRepository.updateFlashcard(event.flashcardId, event.deck.id, event.front, event.back);
-      flashcardsBloc.add(LoadFlashcards(new List(), event.deck, 0, 0));
+      flashcardsBloc.add(LoadFlashcards(new List(), event.targetDeck, 0, 0));
+      deckBloc.add(LoadDecks());
       navigatorKey.currentState.pop();
     }
   }

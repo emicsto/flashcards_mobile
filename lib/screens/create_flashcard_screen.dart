@@ -13,14 +13,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CreateFlashcardScreen extends StatefulWidget {
   final DeckRepository deckRepository;
   final FlashcardRepository flashcardRepository;
-  final FlashcardBloc flashcardBloc;
+  final Deck deck;
   final CardModel flashcard;
 
   const CreateFlashcardScreen(
       {Key key,
       @required this.deckRepository,
       @required this.flashcardRepository,
-      @required this.flashcardBloc,
+      @required this.deck,
       this.flashcard})
       : super(key: key);
 
@@ -47,7 +47,7 @@ class CreateFlashcardScreenState extends State<CreateFlashcardScreen> {
       if(flashcardId == null) {
         BlocProvider.of<FlashcardBloc>(context).add(AddFlashcard(deck.id, front, back));
       } else {
-        BlocProvider.of<FlashcardBloc>(context).add(UpdateFlashcard(flashcardId, deck, front, back));
+        BlocProvider.of<FlashcardBloc>(context).add(UpdateFlashcard(flashcardId, deck, front, back, widget.deck));
       }
     }
   }

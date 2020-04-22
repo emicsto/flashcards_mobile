@@ -29,7 +29,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => LoginScreen(authenticationRepository:  settings.arguments,));
     case AddFlashcardViewRoute:
       ScreenArguments args = settings.arguments;
-      return MaterialPageRoute(builder: (context) => CreateFlashcardScreen(deckRepository: args.deckRepository, flashcardRepository: args.flashcardRepository, flashcard: args.flashcard,));
+      return MaterialPageRoute(builder: (context) => CreateFlashcardScreen(deckRepository: args.deckRepository, flashcardRepository: args.flashcardRepository, deck: args.deck, flashcard: args.flashcard,));
     case CardsViewRoute:
       ScreenArguments args = settings.arguments;
       return MaterialPageRoute(builder: (context) => FlashcardsScreen(deck: args.deck, flashcardRepository: args.flashcardRepository, deckRepository: args.deckRepository,));
