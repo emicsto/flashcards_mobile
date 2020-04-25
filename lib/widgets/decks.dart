@@ -39,9 +39,6 @@ class DecksState extends State<Decks> {
         listener: (context, state) {},
         child: BlocBuilder<DeckBloc, DeckState>(
           builder: (context, state) {
-            if (state is DeckInitial) {
-            }
-
             if (state is DecksLoaded) {
               var decks = state.decks;
 

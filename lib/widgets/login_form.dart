@@ -44,14 +44,7 @@ class LoginForm extends StatelessWidget {
       }
     }, child: BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        return Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                loginText,
-                loginImage,
-                Container(
+        var button = Container(
                   height: 50,
                   child: state is LoginLoading
                       ? Center(child: CircularProgressIndicator())
@@ -59,7 +52,16 @@ class LoginForm extends StatelessWidget {
                           onPressed: state is! LoginLoading
                               ? _onLoginButtonPressed
                               : null),
-                ),
+                );
+
+        return Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                loginText,
+                loginImage,
+                button,
               ]),
         );
       },

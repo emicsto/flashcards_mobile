@@ -22,13 +22,7 @@ class CreateFlashcardForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            DropdownButtonFormField<Deck>(
+    var decksDropdown = DropdownButtonFormField<Deck>(
               onChanged: (Deck deck) {
                 BlocProvider.of<FlashcardBloc>(context)
                     .add(SelectDeck(deck, state.decks));
@@ -44,8 +38,9 @@ class CreateFlashcardForm extends StatelessWidget {
                   child: Text(deck.name),
                 );
               }).toList(),
-            ),
-            TextFormField(
+            );
+
+    var frontTextField = TextFormField(
               keyboardType: TextInputType.multiline,
               minLines: 1,
               maxLines: null,
@@ -67,8 +62,9 @@ class CreateFlashcardForm extends StatelessWidget {
                 }
                 return null;
               },
-            ),
-            TextFormField(
+            );
+
+    var backTextField = TextFormField(
               keyboardType: TextInputType.multiline,
               minLines: 5,
               maxLines: null,
@@ -86,7 +82,17 @@ class CreateFlashcardForm extends StatelessWidget {
                 }
                 return null;
               },
-            ),
+            );
+
+    return Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            decksDropdown,
+            frontTextField,
+            backTextField,
           ],
         ));
   }

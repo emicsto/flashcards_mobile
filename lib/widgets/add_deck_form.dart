@@ -29,6 +29,26 @@ class AddDeckFormState extends State<AddDeckForm> {
 
   @override
   Widget build(BuildContext context) {
+    var deckTextField = TextFormField(
+      controller: deckController,
+      decoration: InputDecoration(hintText: 'Enter a deck name'),
+      autofocus: true,
+      validator: (value) {
+        if (value.trim().isEmpty) {
+          return 'Deck name can not be empty';
+        }
+        return null;
+      },
+    );
+
+    var saveDeckButton = Container(
+      alignment: Alignment.bottomRight,
+      child: FlatButton(
+        onPressed: () => _handleSaveDeck(context),
+        child: Text("Save deck"),
+      ),
+    );
+
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
@@ -38,26 +58,7 @@ class AddDeckFormState extends State<AddDeckForm> {
                   left: 35,
                   bottom: MediaQuery.of(context).viewInsets.bottom),
               child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    controller: deckController,
-                    decoration: InputDecoration(hintText: 'Enter a deck name'),
-                    autofocus: true,
-                    validator: (value) {
-                      if (value.trim().isEmpty) {
-                        return 'Deck name can not be empty';
-                      }
-                      return null;
-                    },
-                  ),
-                  Container(
-                    alignment: Alignment.bottomRight,
-                    child: FlatButton(
-                      onPressed: () => _handleSaveDeck(context),
-                      child: Text("Add deck"),
-                    ),
-                  )
-                ],
+                children: <Widget>[deckTextField, saveDeckButton],
               ))),
     );
   }

@@ -27,101 +27,104 @@ class DeckCard extends StatelessWidget {
           duration: Duration(milliseconds: 2500),
           content: Text("Deck successfully deleted"),
           action: SnackBarAction(
-            label: 'Undo',
-            onPressed: () {
-              //TODO: Some code to undo the change.
-            })));
+              label: 'Undo',
+              onPressed: () {
+                //TODO: Some code to undo the change.
+              })));
     }
 
     _onShowFlashcardsTapped(Deck deck) {
-      BlocProvider.of<DeckBloc>(context).add(
-          LoadDeckFlashcards(deck)
-      );
+      BlocProvider.of<DeckBloc>(context).add(LoadDeckFlashcards(deck));
     }
 
     void onDeckLongPress(context, Deck deck) {
       showModalBottomSheet(
-          context: context,
-          builder: (_) => ListView(
+        context: context,
+        builder: (_) {
+          var deleteDeckTile = ListTile(
+              leading: Icon(
+                Icons.delete,
+                size: 20,
+              ),
+              title: Text('Delete deck'),
+              onTap: () {
+                BlocProvider.of<DeckBloc>(context).add(
+                  DeleteDeck(deck.id),
+                );
+                Navigator.of(context).pop();
+                _showDeckDeletedSnackBar();
+              });
+
+          var editDeckTile = ListTile(
+              leading: Icon(
+                Icons.edit,
+                size: 20,
+              ),
+              title: Text('Rename deck'),
+              onTap: () {
+                // TODO: implement
+              });
+
+          var showFlashcards = ListTile(
+              leading: Icon(
+                Icons.filter_none,
+                size: 20,
+              ),
+              title: Text('Flashcards'),
+              onTap: () => _onShowFlashcardsTapped(deck));
+
+          return ListView(
             shrinkWrap: true,
             children: <Widget>[
-              ListTile(
-                  leading: Icon(
-                    Icons.delete,
-                    size: 20,
-                  ),
-                  title: Text('Delete deck'),
-                  onTap: () {
-                    BlocProvider.of<DeckBloc>(context).add(
-                      DeleteDeck(deck.id),
-                    );
-                    Navigator.of(context).pop();
-                    _showDeckDeletedSnackBar();
-                  }),
-              ListTile(
-                  leading: Icon(
-                    Icons.edit,
-                    size: 20,
-                  ),
-                  title: Text('Rename deck'),
-                  onTap: () {
-                   // TODO: implement
-                  }),
-              ListTile(
-                  leading: Icon(
-                    Icons.filter_none,
-                    size: 20,
-                  ),
-                  title: Text('Flashcards'),
-                  onTap: () => _onShowFlashcardsTapped(deck)),
+              deleteDeckTile,
+              editDeckTile,
+              showFlashcards,
             ],
-          ),
+          );
+        },
       );
     }
 
-
     var deck = decks[index];
+    var deckCard = Card(
+            elevation: 2,
+            child: InkWell(
+              onTap: () => _onDeckTapped(deck),
+              onLongPress: () => onDeckLongPress(context, deck),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  ListTile(
+                    title: Row(
+                      children: <Widget>[
+                        Text(
+                          deck.name,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    subtitle: Container(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: Text(
+                        deck.quantity.toString() + " terms",
+                        style: TextStyle(color: Colors.grey, fontSize: 13.0),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+
     return BlocListener<DeckBloc, DeckState>(
         listener: (context, state) {
-          if(state is DeckDeleted) {
-          }
+          if (state is DeckDeleted) {}
         },
         child: Container(
-            height: 125,
-            padding: const EdgeInsets.only(bottom: 5),
-
-              child: Card(
-                elevation: 2,
-                child:           InkWell(
-                  onTap: () => _onDeckTapped(deck),
-                  onLongPress: () => onDeckLongPress(context, deck),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-
-                      ListTile(
-                        title: Row(
-                          children: <Widget>[
-                            Text(
-                              deck.name,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        subtitle: Container(
-                          padding: const EdgeInsets.only(top: 15.0),
-                          child: Text(
-                            deck.quantity.toString() + " terms",
-                            style:
-                            TextStyle(color: Colors.grey, fontSize: 13.0),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ));
+          height: 125,
+          padding: const EdgeInsets.only(bottom: 5),
+          child: deckCard,
+        ));
   }
 }
