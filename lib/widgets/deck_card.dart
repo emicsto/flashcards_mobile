@@ -37,7 +37,7 @@ class DeckCard extends StatelessWidget {
       BlocProvider.of<DeckBloc>(context).add(LoadDeckFlashcards(deck));
     }
 
-    void onDeckLongPress(context, Deck deck) {
+    void showDeckOptionsSheet(context, Deck deck) {
       showModalBottomSheet(
         context: context,
         builder: (_) {
@@ -87,35 +87,44 @@ class DeckCard extends StatelessWidget {
 
     var deck = decks[index];
     var deckCard = Card(
-            elevation: 2,
-            child: InkWell(
-              onTap: () => _onDeckTapped(deck),
-              onLongPress: () => onDeckLongPress(context, deck),
+      elevation: 2,
+      child: InkWell(
+        onTap: () => _onDeckTapped(deck),
+        onLongPress: () => showDeckOptionsSheet(context, deck),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(20),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ListTile(
-                    title: Row(
-                      children: <Widget>[
-                        Text(
-                          deck.name,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    subtitle: Container(
-                      padding: const EdgeInsets.only(top: 15.0),
-                      child: Text(
-                        deck.quantity.toString() + " terms",
-                        style: TextStyle(color: Colors.grey, fontSize: 13.0),
-                      ),
-                    ),
+                  Text(
+                    deck.name,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    deck.quantity.toString() + " terms",
+                    style: TextStyle(color: Colors.grey, fontSize: 13.0),
                   )
                 ],
               ),
             ),
-          );
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.more_vert),
+                  onPressed: () => showDeckOptionsSheet(context, deck),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
 
     return BlocListener<DeckBloc, DeckState>(
         listener: (context, state) {
