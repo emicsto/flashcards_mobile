@@ -75,14 +75,17 @@ class App extends StatelessWidget {
           ),
 
       darkTheme: ThemeData(
+          canvasColor: Color(0xFF17181A),
           brightness: Brightness.dark,
           primarySwatch: Colors.teal,
           accentColor: Color(0xFF268979),
           buttonTheme: ButtonThemeData(
             buttonColor: Colors.white12,
           ),
+        cardColor: Color(0xFF242529),
         appBarTheme: AppBarTheme(
-          color: Color(0xFF1F2025),
+          elevation: 0,
+          color: Color(0xFF17181A),
           iconTheme: IconThemeData(color: Color(0xFF9BA0A6)),
         ),
         bottomAppBarTheme: BottomAppBarTheme(
