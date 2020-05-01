@@ -1,6 +1,7 @@
 import 'package:flashcards/models/card_model.dart';
 import 'package:flashcards/models/deck.dart';
 import 'package:flashcards/screens/empty_deck_screen.dart';
+import 'package:flashcards/screens/review_finished_screen.dart';
 import 'package:flashcards/utils/assessment.dart';
 import 'package:flashcards/widgets/flashcard.dart';
 import 'package:flashcards/widgets/loader_centered.dart';
@@ -45,10 +46,21 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   }
 
   Widget buildScreen(BuildContext context) {
-    return Center(
-        child: Column(
-      children: <Widget>[buildCard(context), buildButtons()],
-    ));
+    return BlocBuilder<FlashcardsBloc, FlashcardsState>(
+        builder: (context, state) {
+          if (state is FlashcardsLoaded) {
+            if (state.flashcards.length > state.index) {
+              return Center(
+                  child: Column(
+                    children: <Widget>[buildCard(context), buildButtons()],
+                  ));
+            } else {
+              return ReviewFinishedScreen();
+            }
+          }
+          return LoaderCentered();
+        }
+    );
   }
 
   Widget buildButtons() {
@@ -103,37 +115,37 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
       child: BlocBuilder<FlashcardsBloc, FlashcardsState>(
         builder: (context, state) {
           if (state is FlashcardsLoaded) {
-            return Expanded(
-              flex: 4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  FlipCard(
-                    speed: 350,
-                    key: cardKey,
-                    direction: FlipDirection.HORIZONTAL,
-                    front: Flashcard(
-                      text: Text(
-                        state.flashcards.isNotEmpty
-                            ? state.flashcards[state.index].front
-                            : "",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
+              return Expanded(
+                flex: 4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    FlipCard(
+                      speed: 350,
+                      key: cardKey,
+                      direction: FlipDirection.HORIZONTAL,
+                      front: Flashcard(
+                        text: Text(
+                          state.flashcards.isNotEmpty
+                              ? state.flashcards[state.index].front
+                              : "",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 25),
+                        ),
+                      ),
+                      back: Flashcard(
+                        text: Text(
+                          state.flashcards.isNotEmpty
+                              ? state.flashcards[state.index].back
+                              : "",
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ),
                     ),
-                    back: Flashcard(
-                      text: Text(
-                        state.flashcards.isNotEmpty
-                            ? state.flashcards[state.index].back
-                            : "",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
+                  ],
+                ),
+              );
           }
           return LoaderCentered();
         },
